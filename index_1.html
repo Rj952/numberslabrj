@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Numbers Lab: a quantitative research journey for Caribbean researchers</title>
+<meta name="author" content="Dr Rohan Jowallah">
+<meta name="description" content="Learn quantitative research statistics step by step, from basic terms to t-tests, ANOVA and chi-square, using synthetic Caribbean education research data. Created by Dr Rohan Jowallah.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF3F8; --bg2:#E2ECF4; --surface:rgba(255,255,255,.68); --solid:#FFFFFF; --glass:rgba(247,251,255,.72);
+  --line:rgba(15,40,72,.13); --grid:rgba(15,40,72,.10); --paper:rgba(15,40,72,.045);
+  --ink:#0A1A31; --ink-soft:#4A5C77; --accent:#0A8A82; --accent-2:#5B45F0; --accent-ink:#FFFFFF;
+  --pen:#D13A3A; --pen-bg:rgba(209,58,58,.10); --tick:#0B8550; --tick-bg:rgba(11,133,80,.10);
+  --hi:#E9A21B; --hi-ink:#2A1E00; --coral:#F0645A; --shadow:0 18px 50px -28px rgba(10,30,60,.35);
+  --a1:#38D9C9; --a2:#FFC75A; --a3:#FF7A6E; --a4:#8E7BFF; --aur:.38;
+  --s1:#2563EB; --s2:#0E9F6E; --s3:#C26A00; --s4:#D02670; --s5:#6D3BE0; --s6:#0786A8;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#050913; --bg2:#0A1124; --surface:rgba(16,25,50,.58); --solid:#0E1631; --glass:rgba(7,12,28,.72);
+    --line:rgba(140,170,255,.15); --grid:rgba(140,170,255,.09); --paper:rgba(140,170,255,.06);
+    --ink:#E9F1FF; --ink-soft:#94A6C6; --accent:#2EE6D0; --accent-2:#8D7DFF; --accent-ink:#03121A;
+    --pen:#FF7D7D; --pen-bg:rgba(255,125,125,.12); --tick:#4CE5A2; --tick-bg:rgba(76,229,162,.12);
+    --hi:#FFD166; --hi-ink:#221800; --coral:#FF8A7A; --shadow:0 24px 60px -30px rgba(0,0,0,.8);
+    --a1:#14C8B8; --a2:#F2B53A; --a3:#FF5E73; --a4:#6C5CFF; --aur:.42;
+    --s1:#60A5FA; --s2:#34D399; --s3:#FBBF24; --s4:#F472B6; --s5:#A78BFA; --s6:#22D3EE;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#050913; --bg2:#0A1124; --surface:rgba(16,25,50,.58); --solid:#0E1631; --glass:rgba(7,12,28,.72);
+    --line:rgba(140,170,255,.15); --grid:rgba(140,170,255,.09); --paper:rgba(140,170,255,.06);
+    --ink:#E9F1FF; --ink-soft:#94A6C6; --accent:#2EE6D0; --accent-2:#8D7DFF; --accent-ink:#03121A;
+    --pen:#FF7D7D; --pen-bg:rgba(255,125,125,.12); --tick:#4CE5A2; --tick-bg:rgba(76,229,162,.12);
+    --hi:#FFD166; --hi-ink:#221800; --coral:#FF8A7A; --shadow:0 24px 60px -30px rgba(0,0,0,.8);
+    --a1:#14C8B8; --a2:#F2B53A; --a3:#FF5E73; --a4:#6C5CFF; --aur:.42;
+    --s1:#60A5FA; --s2:#34D399; --s3:#FBBF24; --s4:#F472B6; --s5:#A78BFA; --s6:#22D3EE;
+    color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 130px)}
+body{margin:0;color:var(--ink);background:var(--bg);font-family:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;font-size:17px;line-height:1.62;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--glass)}
+::selection{background:color-mix(in srgb,var(--accent) 35%,transparent)}
+
+/* ambient background */
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:radial-gradient(1200px 700px at 80% -10%,var(--bg2),transparent 70%),var(--bg)}
+.aurora span{position:absolute;width:52vmax;height:52vmax;border-radius:50%;filter:blur(90px);opacity:var(--aur);mix-blend-mode:screen;animation:drift 34s ease-in-out infinite alternate}
+:root:not([data-theme="dark"]) .aurora span{mix-blend-mode:multiply}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .aurora span{mix-blend-mode:screen}}
+.aurora span:nth-child(1){background:var(--a1);top:-18vmax;left:-12vmax}
+.aurora span:nth-child(2){background:var(--a4);top:20vh;right:-22vmax;animation-duration:42s;animation-delay:-8s}
+.aurora span:nth-child(3){background:var(--a2);bottom:-26vmax;left:18vw;opacity:calc(var(--aur)*.7);animation-duration:38s;animation-delay:-16s}
+.aurora span:nth-child(4){background:var(--a3);bottom:-20vmax;right:6vw;width:34vmax;height:34vmax;opacity:calc(var(--aur)*.6);animation-duration:46s}
+.aurora::after{content:"";position:absolute;inset:0;background-image:radial-gradient(var(--grid) 1px,transparent 1.2px);background-size:24px 24px;-webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.35) 60%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.35) 60%,transparent 100%)}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,4vh) scale(1.12)}100%{transform:translate(-4vw,8vh) scale(.95)}}
+
+h1,h2,h3,h4{font-family:"Sora","Segoe UI",system-ui,sans-serif;line-height:1.15;margin:0;letter-spacing:-.015em}
+h2{font-size:clamp(1.8rem,4.2vw,2.7rem);font-weight:700;margin:.4rem 0 .6rem;letter-spacing:-.03em}
+h3{font-size:1.22rem;font-weight:600;margin:2.2rem 0 .7rem}
+h4{font-size:1.02rem;font-weight:600;margin:0 0 .3rem}
+p{margin:.4rem 0 .85rem}
+a{color:var(--accent)}
+code,.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.9em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);border-bottom:1px solid var(--line)}
+.bar{max-width:1000px;margin:0 auto;padding:.65rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--ink)}
+.brand h1{font-size:1.12rem;font-weight:800;letter-spacing:-.02em}
+.logo{width:30px;height:30px;border-radius:9px;background:conic-gradient(from 210deg,var(--accent),var(--accent-2),var(--coral),var(--hi),var(--accent));box-shadow:0 0 18px -2px color-mix(in srgb,var(--accent) 60%,transparent);position:relative}
+.logo::after{content:"";position:absolute;inset:7px;border-radius:4px;background:var(--glass)}
+.hud{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.score{display:flex;align-items:center;gap:.4rem;font-size:.82rem;color:var(--ink-soft)}
+.score span{display:inline-flex;align-items:baseline;gap:.35rem;padding:.25rem .6rem;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.score strong{font-family:"JetBrains Mono",monospace;font-size:1rem;color:var(--ink)}
+.score span.rank{background:linear-gradient(135deg,color-mix(in srgb,var(--hi) 30%,transparent),color-mix(in srgb,var(--coral) 22%,transparent));color:var(--ink);font-weight:700;border-color:color-mix(in srgb,var(--hi) 45%,transparent)}
+.icon-btn{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--ink)}
+.icon-btn:hover{border-color:var(--accent)}
+.bump{animation:bump .5s ease}
+@keyframes bump{40%{transform:scale(1.3);color:var(--accent)}}
+nav.top{max-width:1000px;margin:0 auto;padding:0 .8rem .55rem;display:flex;gap:.3rem;overflow-x:auto;scrollbar-width:none}
+nav.top a{flex:0 0 auto;text-decoration:none;color:var(--ink-soft);padding:.38rem .85rem;border-radius:999px;font-family:"Sora",sans-serif;font-weight:600;font-size:.86rem;border:1px solid transparent;transition:.2s}
+nav.top a:hover{color:var(--ink);background:var(--surface)}
+nav.top a[aria-current="page"]{color:var(--ink);background:var(--surface);border-color:var(--line);box-shadow:inset 0 -2px 0 var(--accent),0 0 22px -10px var(--accent)}
+.progress-line{height:2px;background:var(--line)}
+.progress-line i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--coral));box-shadow:0 0 12px var(--accent);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+
+main{max-width:1000px;margin:0 auto;padding:1.6rem 1.1rem 4rem}
+.lede{color:var(--ink-soft);max-width:66ch;font-size:1.06rem}
+.sheet{background:var(--surface);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:20px;padding:1.2rem 1.35rem;margin:.9rem 0;box-shadow:var(--shadow)}
+.callout{position:relative;border:1px solid color-mix(in srgb,var(--stage,var(--accent)) 30%,transparent);border-left:3px solid var(--stage,var(--accent));background:linear-gradient(100deg,color-mix(in srgb,var(--stage,var(--accent)) 13%,transparent),transparent 75%);padding:.9rem 1.1rem;margin:.7rem 0;border-radius:4px 16px 16px 4px}
+.callout.lens{border-left-color:var(--s6);border-color:color-mix(in srgb,var(--s6) 30%,transparent);background:linear-gradient(100deg,color-mix(in srgb,var(--s6) 14%,transparent),transparent 75%)}
+.meta{color:var(--ink-soft);font-size:.93rem}
+mark{background:color-mix(in srgb,var(--hi) 26%,transparent);color:var(--ink);padding:.05rem .3rem;border-radius:5px;box-shadow:inset 0 -2px 0 var(--hi);font-family:"JetBrains Mono",monospace;font-size:.95em;font-weight:600}
+.formula{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.92rem;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:.25rem .65rem;margin:.2rem 0}
+.formula-list p{margin:.4rem 0}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-radius:28px;border:1px solid var(--line);background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 10%,var(--surface)),var(--surface) 55%,color-mix(in srgb,var(--accent-2) 12%,var(--surface)));box-shadow:var(--shadow);padding:clamp(1.6rem,5vw,3.4rem) clamp(1.2rem,4vw,2.8rem);margin-bottom:1.4rem;isolation:isolate}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.9}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(600px 300px at 15% 30%,var(--glass),transparent 70%);opacity:.7}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:"JetBrains Mono",monospace;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .8rem;padding:.3rem .7rem;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:999px;background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.display{font-size:clamp(2.3rem,7vw,4.3rem);font-weight:800;letter-spacing:-.045em;line-height:1.02;margin:0 0 .8rem;max-width:14ch}
+.grad{background:linear-gradient(95deg,var(--accent) 0%,var(--hi) 55%,var(--coral) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.readout{position:absolute;right:clamp(1rem,3vw,2rem);bottom:clamp(1rem,3vw,1.8rem);font-family:"JetBrains Mono",monospace;font-size:.85rem;padding:.55rem .85rem;border-radius:12px;border:1px solid var(--line);background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--ink);min-width:12rem;text-align:left}
+.readout small{display:block;color:var(--ink-soft);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
+.readout b{display:block;font-weight:600;transition:opacity .4s}
+@media (max-width:640px){.readout{position:static;margin-top:1.2rem;display:inline-block}}
+
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.8rem;margin:1rem 0}
+.stat-row>div{display:flex;align-items:center;gap:.8rem;background:var(--surface);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:18px;padding:.9rem 1rem}
+.stat-row strong{display:block;font-family:"Sora",sans-serif;font-size:1.55rem;font-weight:700;letter-spacing:-.02em}
+.stat-row .meta{display:block;font-size:.82rem}
+.ring{width:48px;height:48px;flex:0 0 48px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:5}
+.ring .bgc{stroke:var(--line)}
+.ring .fg{stroke:url(#ringGrad);stroke-linecap:round;transition:stroke-dasharray 1s ease;filter:drop-shadow(0 0 4px var(--accent))}
+.stat-icon{width:48px;height:48px;flex:0 0 48px;border-radius:14px;display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-weight:600;background:color-mix(in srgb,var(--accent) 14%,transparent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);color:var(--accent)}
+
+/* journey map */
+.route{position:relative;margin:2rem 0 0}
+.stage{position:relative;padding:0 0 1.8rem 3.4rem;--stage:var(--s1)}
+.stage::before{content:"";position:absolute;left:1.2rem;top:1.4rem;bottom:0;width:3px;background:linear-gradient(180deg,var(--stage),color-mix(in srgb,var(--stage) 20%,transparent));border-radius:3px;box-shadow:0 0 14px var(--stage)}
+.stage:last-child::before{bottom:1.8rem}
+.stage-head{position:relative;margin-bottom:.6rem}
+.stage-head::before{content:attr(data-n);position:absolute;left:-3.4rem;top:-.25rem;width:2.7rem;height:2.7rem;border-radius:14px;background:var(--stage);color:var(--bg);display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:1.1rem;box-shadow:0 0 0 5px color-mix(in srgb,var(--stage) 18%,transparent),0 0 26px -4px var(--stage)}
+.stage-head h3{margin:0;font-size:1.45rem;font-weight:700;color:var(--ink)}
+.stage-head p{margin:.2rem 0 0;color:var(--ink-soft)}
+.stations{list-style:none;margin:.7rem 0 0;padding:0}
+.stations li{position:relative}
+.stations a{position:relative;display:block;text-decoration:none;color:var(--ink);padding:.75rem 2.6rem .75rem 1rem;margin:.45rem 0;border-radius:14px;border:1px solid var(--line);background:var(--surface);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:transform .2s,border-color .2s,box-shadow .2s}
+.stations a:hover{transform:translateX(4px);border-color:color-mix(in srgb,var(--stage) 55%,transparent);box-shadow:0 0 26px -12px var(--stage)}
+.stations a::before{content:"";position:absolute;left:-2.42rem;top:1.15rem;width:.85rem;height:.85rem;border-radius:50%;background:var(--bg);border:2px solid var(--stage)}
+.stations a::after{content:"→";position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--ink-soft);transition:.2s}
+.stations a:hover::after{color:var(--stage);right:.8rem}
+.stations li.done a::before{background:var(--stage);box-shadow:0 0 12px var(--stage)}
+.stations strong{display:block;font-family:"Sora",sans-serif;font-weight:600}
+.stations span{color:var(--ink-soft);font-size:.92rem}
+.stations li.done strong::after{content:"✓";margin-left:.45rem;font-size:.8rem;padding:.05rem .4rem;border-radius:999px;color:var(--tick);background:var(--tick-bg)}
+
+/* lesson */
+.lesson{--stage:var(--s1)}
+.crumb{display:inline-flex;align-items:center;gap:.5rem;font-family:"JetBrains Mono",monospace;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--stage);margin:0;padding:.3rem .75rem;border-radius:999px;border:1px solid color-mix(in srgb,var(--stage) 40%,transparent);background:color-mix(in srgb,var(--stage) 10%,transparent)}
+.crumb::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--stage);box-shadow:0 0 10px var(--stage)}
+.lesson>h3{display:flex;align-items:center;gap:.6rem}
+.lesson>h3::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--stage);box-shadow:0 0 12px var(--stage);transform:rotate(45deg)}
+dl.terms{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.2rem 1.4rem}
+.term{border-top:1px solid var(--line);padding:.75rem 0}
+.term dt{font-family:"Sora",sans-serif;font-weight:600;font-size:1rem;color:var(--ink)}
+.term dt::before{content:"▹ ";color:var(--stage)}
+.term dd{margin:.2rem 0 0;color:var(--ink-soft);font-size:.96rem}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.8rem;flex-wrap:wrap}
+
+.tiles{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0}
+.tile{min-width:3rem;padding:.45rem .6rem;text-align:center;font-family:"JetBrains Mono",monospace;font-size:1.12rem;font-weight:600;background:linear-gradient(180deg,var(--solid),color-mix(in srgb,var(--solid) 70%,transparent));border:1px solid var(--line);border-radius:11px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px -12px var(--stage,var(--accent));animation:tileIn .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 35ms)}
+@keyframes tileIn{from{opacity:0;transform:translateY(8px) scale(.94)}}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.9rem 0}
+.btn{cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:.55rem 1rem;border-radius:12px;font-family:"Sora",sans-serif;font-weight:600;font-size:.9rem;text-decoration:none;transition:border-color .2s,box-shadow .2s,transform .15s}
+.btn:hover{border-color:var(--accent);box-shadow:0 0 22px -10px var(--accent)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{border-color:transparent;color:var(--accent-ink);background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 72%,var(--accent-2)));box-shadow:0 10px 26px -12px var(--accent)}
+.btn.primary:hover{box-shadow:0 12px 32px -10px var(--accent);filter:brightness(1.06)}
+.btn:disabled{opacity:.45;cursor:default;box-shadow:none}
+.seg{display:inline-flex;flex-wrap:wrap;gap:3px;padding:3px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:.4rem .8rem;cursor:pointer;color:var(--ink-soft);font-family:"Sora",sans-serif;font-weight:600;font-size:.85rem;border-radius:10px;transition:.2s}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{color:var(--ink);background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 24%,transparent),color-mix(in srgb,var(--accent-2) 18%,transparent));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent)}
+
+.answers{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.9rem 1.1rem;margin-top:.9rem}
+.field label{display:block;font-weight:700;margin-bottom:.25rem;font-size:.9rem}
+.field input,.field select{width:100%;padding:.55rem .7rem;border:1px solid var(--line);border-radius:11px;background:var(--solid);font-family:"JetBrains Mono",monospace;font-size:1rem;transition:border-color .2s,box-shadow .2s}
+.field select{font-family:"Atkinson Hyperlegible",sans-serif}
+.field input:focus,.field select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.field.ok input,.field.ok select{border-color:var(--tick);background:var(--tick-bg);box-shadow:0 0 18px -8px var(--tick)}
+.field.bad input,.field.bad select{border-color:var(--pen);background:var(--pen-bg)}
+.mark{min-height:1.1rem;font-size:.86rem;margin-top:.25rem}
+.field.ok .mark{color:var(--tick);font-weight:700}
+.field.bad .mark{color:var(--pen)}
+
+.steps{list-style:none;padding:0;margin:1.1rem 0 0;counter-reset:st}
+.steps li{counter-increment:st;position:relative;padding:.2rem 0 1.2rem 3.2rem}
+.steps li::before{content:counter(st,decimal-leading-zero);position:absolute;left:0;top:0;width:2.2rem;height:2.2rem;border-radius:10px;background:color-mix(in srgb,var(--stage,var(--accent)) 16%,transparent);border:1px solid color-mix(in srgb,var(--stage,var(--accent)) 55%,transparent);color:var(--stage,var(--accent));display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.82rem;box-shadow:0 0 16px -6px var(--stage,var(--accent))}
+.steps li::after{content:"";position:absolute;left:1.1rem;top:2.4rem;bottom:.2rem;width:1px;background:linear-gradient(var(--stage,var(--accent)),transparent)}
+.steps li:last-child::after{display:none}
+.steps .why-step{color:color-mix(in srgb,var(--stage,var(--accent)) 70%,var(--ink-soft));font-size:.9rem;font-style:italic;margin:.1rem 0 .45rem}
+.step-in{animation:stepIn .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes stepIn{from{opacity:0;transform:translateY(10px);filter:blur(4px)}}
+
+.table-wrap{overflow-x:auto;margin:.6rem 0;max-width:100%;border:1px solid var(--line);border-radius:12px;background:var(--paper);width:fit-content}
+table{border-collapse:collapse;font-size:.9rem}
+th,td{padding:.38rem .7rem;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+td{font-family:"JetBrains Mono",monospace;font-size:.86rem}
+th{background:color-mix(in srgb,var(--stage,var(--accent)) 12%,transparent);font-family:"Sora",sans-serif;font-weight:600;font-size:.82rem;color:var(--ink)}
+td.l,th.l{text-align:left;white-space:normal;font-family:"Atkinson Hyperlegible",sans-serif}
+tbody tr:hover td{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+tfoot td{font-weight:600;background:color-mix(in srgb,var(--hi) 10%,transparent);border-bottom:0}
+.data-scroll{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.data-scroll table{width:100%}
+.data-scroll th{position:sticky;top:0;background:var(--solid)}
+.why{margin-top:1rem;padding:.9rem 1.1rem;border-radius:14px;border:1px solid color-mix(in srgb,var(--tick) 40%,transparent);background:linear-gradient(110deg,var(--tick-bg),transparent)}
+.working{border-top:1px dashed var(--line);margin-top:1.1rem;padding-top:.8rem}
+.chart{max-width:100%;height:auto;display:block;margin:.6rem 0}
+.chart text{fill:var(--ink-soft);font-size:12px;font-family:"JetBrains Mono",monospace}
+.chart rect,.chart circle{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--stage,var(--accent)) 50%,transparent))}
+
+/* activities */
+.act-item{border-top:1px solid var(--line);padding:1rem 0}
+.act-item:first-child{border-top:0;padding-top:.2rem}
+.act-q{font-weight:700;margin:0 0 .6rem}
+.opts{display:flex;flex-wrap:wrap;gap:.5rem}
+.opt{cursor:pointer;padding:.55rem .9rem;border:1px solid var(--line);border-radius:12px;background:var(--solid);text-align:left;transition:.2s}
+.opt:hover:not(:disabled){border-color:var(--accent);box-shadow:0 0 20px -10px var(--accent);transform:translateY(-1px)}
+.opt.right{border-color:var(--tick);background:var(--tick-bg);box-shadow:0 0 20px -8px var(--tick)}
+.opt.wrong{border-color:var(--pen);background:var(--pen-bg)}
+.opt:disabled{cursor:default}
+.explain{margin:.55rem 0 0;font-size:.93rem}
+.explain.ok{color:var(--tick)}
+.explain.bad{color:var(--pen)}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.1rem .65rem;font-size:.82rem;background:var(--surface)}
+.level-nominal{border-color:var(--s1);color:var(--s1)} .level-ordinal{border-color:var(--s3);color:var(--s3)} .level-interval{border-color:var(--s2);color:var(--s2)} .level-ratio{border-color:var(--s4);color:var(--s4)}
+.tree-step{margin:.9rem 0}
+.result{border:1px solid transparent;border-radius:20px;padding:1.2rem 1.3rem;margin-top:1rem;background:linear-gradient(var(--solid),var(--solid)) padding-box,linear-gradient(135deg,var(--accent),var(--accent-2),var(--coral)) border-box;box-shadow:0 0 40px -18px var(--accent)}
+.search{width:100%;padding:.7rem .9rem;border:1px solid var(--line);border-radius:14px;background:var(--surface);font-size:1.05rem}
+.search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.gloss dt{font-family:"Sora",sans-serif;font-weight:600;font-size:1.05rem;margin-top:1.1rem}
+.gloss dd{margin:.2rem 0 0;color:var(--ink-soft)}
+.gloss dd a{font-size:.88rem}
+footer{max-width:1000px;margin:0 auto;padding:1rem 1.1rem 2.4rem;color:var(--ink-soft);font-size:.86rem;border-top:1px solid var(--line)}
+footer button{background:none;border:0;color:var(--accent);text-decoration:underline;cursor:pointer;padding:0}
+@media (max-width:560px){.stage{padding-left:3.2rem}.stage-head::before{left:-3.2rem}.stage::before{left:1.15rem}.stations a::before{left:-2.25rem}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--accent-2)"/></linearGradient></defs></svg>
+<header>
+  <div class="bar">
+    <a class="brand" href="#journey"><span class="logo" aria-hidden="true"></span><h1>Numbers Lab</h1></a>
+    <div class="hud"><div class="score" aria-live="polite">
+      <span>Points <strong id="pts">0</strong></span>
+      <span>Streak <strong id="streak">0</strong></span>
+      <span class="rank" id="rank">Getting started</span>
+    </div><button class="icon-btn" id="themeBtn" aria-label="Switch between light and dark mode" title="Light or dark mode"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button></div>
+  </div>
+  <nav class="top" aria-label="Main">
+    <a href="#journey">Research journey</a>
+    <a href="#data">Data bank</a>
+    <a href="#choose">Choose a test</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#about">About</a>
+  </nav>
+  <div class="progress-line" aria-hidden="true"><i id="prog"></i></div>
+</header>
+<main id="app"></main>
+<footer>
+  <p><strong>Created by Dr Rohan Jowallah.</strong> © 2026. Lessons licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener" target="_blank">CC BY-NC-SA 4.0</a>; code under the MIT Licence. <a href="#about">About and how to cite</a>.</p><p>All data are synthetic, for practice only. Progress and points are saved in this browser. <button id="reset">Reset my progress</button></p>
+</footer>
+<script>
+"use strict";
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+/* ===== basic statistics ===== */
+const sum = a => a.reduce((s,x)=>s+x,0);
+const mean = a => sum(a)/a.length;
+const sorted = a => [...a].sort((x,y)=>x-y);
+function median(a){const s=sorted(a),n=s.length,m=Math.floor(n/2);return n%2?s[m]:(s[m-1]+s[m])/2;}
+function freq(a){const f=new Map();a.forEach(x=>f.set(x,(f.get(x)||0)+1));return f;}
+function modes(a){const f=freq(a);const mx=Math.max(...f.values());if(mx<2)return[];return [...f.keys()].filter(k=>f.get(k)===mx).sort((x,y)=>x-y);}
+const ss = a => {const m=mean(a);return sum(a.map(x=>(x-m)**2));};
+const variance = (a,sample=true) => ss(a)/(a.length-(sample?1:0));
+const sd = (a,sample=true) => Math.sqrt(variance(a,sample));
+function quartiles(a){
+  const s=sorted(a),n=s.length,h=Math.floor(n/2);
+  const lower=s.slice(0,h),upper=s.slice(n%2?h+1:h);
+  return {lower,upper,q1:median(lower),q3:median(upper)};
+}
+
+/* ===== distributions ===== */
+function lgamma(x){
+  const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];
+  let y=x,tmp=x+5.5;tmp-=(x+0.5)*Math.log(tmp);let ser=1.000000000190015;
+  for(let j=0;j<6;j++){y+=1;ser+=c[j]/y;}
+  return -tmp+Math.log(2.5066282746310005*ser/x);
+}
+function betacf(a,b,x){
+  const FP=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;
+  if(Math.abs(d)<FP)d=FP;d=1/d;let h=d;
+  for(let m=1;m<=300;m++){
+    const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));
+    d=1+aa*d;if(Math.abs(d)<FP)d=FP;c=1+aa/c;if(Math.abs(c)<FP)c=FP;d=1/d;h*=d*c;
+    aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+    d=1+aa*d;if(Math.abs(d)<FP)d=FP;c=1+aa/c;if(Math.abs(c)<FP)c=FP;d=1/d;
+    const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break;
+  }
+  return h;
+}
+function ibeta(x,a,b){
+  if(x<=0)return 0;if(x>=1)return 1;
+  const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));
+  return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b;
+}
+function gammaP(a,x){
+  if(x<=0)return 0;const gln=lgamma(a);
+  if(x<a+1){let ap=a,s=1/a,del=s;for(let n=0;n<500;n++){ap++;del*=x/ap;s+=del;if(Math.abs(del)<Math.abs(s)*1e-15)break;}return s*Math.exp(-x+a*Math.log(x)-gln);}
+  let b=x+1-a,c=1e300,d=1/b,h=d;
+  for(let i=1;i<500;i++){const an=-i*(i-a);b+=2;d=an*d+b;if(Math.abs(d)<1e-300)d=1e-300;c=b+an/c;if(Math.abs(c)<1e-300)c=1e-300;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<1e-15)break;}
+  return 1-Math.exp(-x+a*Math.log(x)-gln)*h;
+}
+const pT = (t,df) => ibeta(df/(df+t*t),df/2,0.5);            // two-tailed p
+const pF = (F,d1,d2) => F<=0?1:ibeta(d2/(d2+d1*F),d2/2,d1/2); // upper tail
+const pChi = (x,df) => 1-gammaP(df/2,x/2);
+function bisect(f,lo,hi){for(let i=0;i<90;i++){const m=(lo+hi)/2;if(f(m))lo=m;else hi=m;}return (lo+hi)/2;}
+const tCrit = df => bisect(t=>pT(t,df)>0.05,0,60);
+const chiCrit = df => bisect(x=>pChi(x,df)>0.05,0,200);
+const fCrit = (d1,d2) => bisect(F=>pF(F,d1,d2)>0.05,0,500);
+function normalCdf(z){
+  const t=1/(1+0.3275911*Math.abs(z)/Math.SQRT2);
+  const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z/2);
+  return z>=0?(1+y)/2:(1-y)/2;
+}
+
+/* ===== random numbers (seeded so a class sees the same data) ===== */
+function hashStr(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;}
+function Rng(seed){
+  let a=seed>>>0;
+  const next=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};
+  const r={
+    next,
+    int:(lo,hi)=>lo+Math.floor(next()*(hi-lo+1)),
+    normal:(mu=0,s=1)=>{let u=0,v=0;while(!u)u=next();while(!v)v=next();return mu+s*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);},
+    pick:arr=>arr[Math.floor(next()*arr.length)],
+    shuffle:arr=>{const b=[...arr];for(let i=b.length-1;i>0;i--){const j=Math.floor(next()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;},
+    sample:(arr,n)=>r.shuffle(arr).slice(0,n),
+    chance:p=>next()<p
+  };
+  return r;
+}
+const clamp = (x,lo,hi) => Math.max(lo,Math.min(hi,x));
+
+/* ===== formatting ===== */
+const r2 = x => Math.round(x*100)/100;
+const fmt = (x,d=2) => { if(!isFinite(x)) return "—"; const v=Math.round(x*10**d)/10**d; return String(Object.is(v,-0)?0:v).replace("-","−"); };
+const fx = (x,d=2) => { const v=Math.round(x*10**d)/10**d; return (v<0?"−":"")+Math.abs(v).toFixed(d); };
+const noLead = s => s.replace(/^(−?)0\./,"$1.");
+function fmtP(p){ if(p<.001) return "p < .001"; return "p = "+noLead(p.toFixed(3)); }
+function readNum(el){ const v=el.value.trim().replace(/,/g,".").replace(/[−–]/g,"-"); if(v==="") return null; const n=Number(v); return isFinite(n)?n:NaN; }
+function close(u,t,tol={}){ const abs=tol.abs??0.05, rel=tol.rel??0.01; return Math.abs(u-t)<=Math.max(abs,Math.abs(t)*rel); }
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ===== small UI builders ===== */
+const tiles = a => `<div class="tiles">${a.map((x,i)=>`<span class="tile" style="--i:${i}">${x}</span>`).join("")}</div>`;
+function table(heads,rows,foot){
+  return `<div class="table-wrap"><table><thead><tr>${heads.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody>${foot?`<tfoot><tr>${foot.map(c=>`<td>${c}</td>`).join("")}</tr></tfoot>`:""}</table></div>`;
+}
+function barChart(labels,values,opts={}){
+  const W=520,H=220,pl=36,pb=34,pt=12,max=Math.max(...values,1),bw=(W-pl-10)/labels.length;
+  const bars=values.map((v,i)=>{const h=(H-pb-pt)*v/max,x=pl+i*bw+bw*.15,y=H-pb-h;
+    return `<rect x="${x}" y="${y}" width="${bw*.7}" height="${h}" fill="var(--stage,var(--accent))" rx="2"/><text x="${x+bw*.35}" y="${y-4}" text-anchor="middle">${v}</text><text x="${x+bw*.35}" y="${H-pb+16}" text-anchor="middle">${labels[i]}</text>`;}).join("");
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label||"Bar chart")}"><line x1="${pl}" y1="${H-pb}" x2="${W-6}" y2="${H-pb}" stroke="var(--line)"/>${bars}${opts.xTitle?`<text x="${(W+pl)/2}" y="${H-2}" text-anchor="middle">${opts.xTitle}</text>`:""}</svg>`;
+}
+function scatter(xs,ys,opts={}){
+  const W=520,H=300,pl=46,pb=40,pt=12,pr=12;
+  const xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...ys),ymax=Math.max(...ys);
+  const xp=(xmax-xmin)*.1||1,yp=(ymax-ymin)*.1||1,x0=xmin-xp,x1=xmax+xp,y0=ymin-yp,y1=ymax+yp;
+  const X=v=>pl+(v-x0)/(x1-x0)*(W-pl-pr),Y=v=>H-pb-(v-y0)/(y1-y0)*(H-pb-pt);
+  let line="";
+  if(opts.line){const [a,b]=opts.line;line=`<line x1="${X(x0)}" y1="${Y(a+b*x0)}" x2="${X(x1)}" y2="${Y(a+b*x1)}" stroke="var(--pen)" stroke-width="2"/>`;}
+  const ticks=n=>Array.from({length:5},(_,i)=>n[0]+(n[1]-n[0])*i/4);
+  const xt=ticks([x0,x1]).map(v=>`<text x="${X(v)}" y="${H-pb+16}" text-anchor="middle">${fmt(v,1)}</text>`).join("");
+  const yt=ticks([y0,y1]).map(v=>`<text x="${pl-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,1)}</text><line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/>`).join("");
+  const pts=xs.map((x,i)=>`<circle cx="${X(x)}" cy="${Y(ys[i])}" r="5" fill="var(--stage,var(--accent))" fill-opacity=".85"/>`).join("");
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label||"Scatterplot")}">${yt}<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line)"/><line x1="${pl}" y1="${pt}" x2="${pl}" y2="${H-pb}" stroke="var(--line)"/>${xt}${line}${pts}<text x="${(W+pl)/2}" y="${H-4}" text-anchor="middle">${opts.xTitle||"x"}</text><text x="14" y="${(H-pb)/2}" text-anchor="middle" transform="rotate(-90 14 ${(H-pb)/2})">${opts.yTitle||"y"}</text></svg>`;
+}
+function histogram(values,opts={}){
+  const min=Math.min(...values),max=Math.max(...values),k=opts.bins||8,w=(max-min)/k||1;
+  const counts=Array(k).fill(0);values.forEach(v=>{counts[Math.min(k-1,Math.floor((v-min)/w))]++;});
+  const labels=counts.map((_,i)=>fmt(min+i*w,0));
+  return barChart(labels,counts,{label:opts.label||"Histogram",xTitle:opts.xTitle});
+}
+
+/* ===== points and progress ===== */
+const store={score:0,streak:0,done:{},sampleNo:1};
+try{Object.assign(store,JSON.parse(localStorage.getItem("numbersLabV2")||"{}"));store.streak=0;}catch(e){}
+function save(){try{localStorage.setItem("numbersLabV2",JSON.stringify({score:store.score,done:store.done,sampleNo:store.sampleNo}));}catch(e){}}
+const rankFor = p => p<80?"Getting started":p<250?"Number cruncher":p<600?"Data detective":p<1100?"Research analyst":"Lead researcher";
+function renderScore(bump){
+  $("#pts").textContent=store.score;$("#streak").textContent=store.streak;$("#rank").textContent=rankFor(store.score);
+  if(bump){const el=$("#pts");el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump");}
+}
+function award(ok,pts){if(ok){store.score+=pts;store.streak++;}else store.streak=0;renderScore(ok&&pts>0);save();}
+function markDone(id){if(!store.done[id]){store.done[id]=true;save();if(typeof updateProg==="function")updateProg();}}
+
+/* ===== synthetic data bank (Caribbean contexts) ===== */
+const LEVEL_TEXT={
+  nominal:"Nominal: categories with no order (labels only).",
+  ordinal:"Ordinal: categories with a clear order, but the gaps between them are not equal.",
+  interval:"Interval: numbers with equal gaps, but zero does not mean ‘none’.",
+  ratio:"Ratio: numbers with equal gaps and a true zero, so ‘twice as much’ makes sense.",
+  id:"Identifier: a label for each case, not something we analyse."
+};
+const GIRLS=["Shanice","Aaliyah","Tishana","Keisha","Shanelle","Tamara","Kerry-Ann","Nadine","Shantelle","Tianna","Brianna","Sasha-Gaye","Kayla","Chevelle","Renee","Abigail","Melissa","Imani","Zara","Alicia","Jada","Monique","Simone","Latoya","Danielle","Gabrielle","Ashanti","Rochelle","Kimberley","Annalise"];
+const BOYS=["Kemar","Devon","Jovan","Andre","Ricardo","Marlon","Odane","Rushane","Dwayne","Javaun","Akeem","Romario","Jahmar","Omari","Shamar","Kadeem","Tajay","Nathaniel","Jordane","Kevaughn","Tyrese","Damion","Rajiv","Kareem","Jabari","Leon","Shaquille","Aldane","Rohan","Matthew"];
+const PARISHES=["Kingston","St Andrew","St Catherine","Clarendon","Manchester","St James","St Ann","Westmoreland"];
+const COUNTRIES=["Jamaica","Trinidad and Tobago","Barbados","Guyana"];
+function namer(r){const used=new Set();return g=>{const list=g==="Girl"?GIRLS:BOYS;for(let k=0;k<40;k++){const n=r.pick(list);if(!used.has(n)){used.add(n);return n;}}const n=r.pick(list)+" "+String.fromCharCode(65+r.int(0,25))+".";used.add(n);return n;};}
+const DATASETS=[
+ {key:"reading",title:"Bilingual Reading Programme Study",cases:"students",
+  story:"Schools in eight Jamaican parishes tested a 10-week Grade 4 reading programme that uses Jamaican Creole alongside English to build reading skills. Half the students joined the programme (Intervention) and half continued with regular lessons (Control). Everyone sat the same English reading test before and after the 10 weeks.",
+  codebook:[
+   {name:"id",label:"Student ID",level:"id",kind:"Label",desc:"Code for each student."},
+   {name:"name",label:"First name",level:"id",kind:"Label",desc:"Made-up first name, used to make examples easier to follow."},
+   {name:"parish",label:"Parish",level:"nominal",kind:"Categorical",desc:"Parish where the school is located."},
+   {name:"group",label:"Group",level:"nominal",kind:"Categorical",desc:"Intervention (bilingual programme) or Control (regular lessons)."},
+   {name:"gender",label:"Gender",level:"nominal",kind:"Categorical",desc:"Girl or Boy."},
+   {name:"pre_score",label:"Reading score before",level:"interval",kind:"Numerical, discrete",desc:"English reading test score out of 100, before the programme. Treated as interval: a score of 0 would not mean ‘no reading ability at all’."},
+   {name:"post_score",label:"Reading score after",level:"interval",kind:"Numerical, discrete",desc:"Same test, after 10 weeks."},
+   {name:"attendance_days",label:"Days attended",level:"ratio",kind:"Numerical, discrete",desc:"School days attended during the 10 weeks (out of 40)."},
+   {name:"confidence",label:"Reading confidence",level:"ordinal",kind:"Categorical (ordered)",desc:"‘I feel confident reading on my own.’ 1 = strongly disagree, 5 = strongly agree."}
+  ],
+  gen(r){const nm=namer(r),rows=[];for(let i=0;i<60;i++){const grp=i%2?"Control":"Intervention",g=r.chance(.5)?"Girl":"Boy";const pre=clamp(Math.round(r.normal(52,10)),20,90);
+    const post=clamp(Math.round(pre+r.normal(grp==="Intervention"?9:2,6)),15,100);
+    rows.push({id:"R"+String(i+1).padStart(2,"0"),name:nm(g),parish:r.pick(PARISHES),group:grp,gender:g,pre_score:pre,post_score:post,
+      attendance_days:clamp(Math.round(r.normal(grp==="Intervention"?33:31,4)),15,40),
+      confidence:clamp(Math.round(1+(post-30)/14+r.normal(0,.7)),1,5)});}
+    return rows;}},
+ {key:"wellbeing",title:"Caribbean Teacher Wellbeing Survey",cases:"teachers",
+  story:"A regional survey asked teachers in Jamaica, Trinidad and Tobago, Barbados and Guyana about their workload, wellbeing and whether they plan to take a teaching job overseas. The wellbeing score adds up 10 Likert items, each scored 1 to 5, so totals run from 10 to 50.",
+  codebook:[
+   {name:"id",label:"Teacher ID",level:"id",kind:"Label",desc:"Code for each teacher."},
+   {name:"country",label:"Country",level:"nominal",kind:"Categorical",desc:"Jamaica, Trinidad and Tobago, Barbados or Guyana."},
+   {name:"school_type",label:"School type",level:"nominal",kind:"Categorical",desc:"Primary, Secondary or Tertiary."},
+   {name:"region",label:"Area",level:"nominal",kind:"Categorical",desc:"Urban or Rural."},
+   {name:"years_experience",label:"Years teaching",level:"ratio",kind:"Numerical, discrete",desc:"Completed years of teaching."},
+   {name:"workload_hours",label:"Weekly workload",level:"ratio",kind:"Numerical, continuous (recorded to the hour)",desc:"Hours worked in a typical week, including marking and planning."},
+   {name:"wellbeing_score",label:"Wellbeing score",level:"interval",kind:"Numerical, discrete",desc:"Total of 10 Likert items (10 to 50). Higher means better wellbeing. Summed scales like this are usually treated as interval."},
+   {name:"supported",label:"Feels supported",level:"ordinal",kind:"Categorical (ordered)",desc:"‘I feel supported by my principal or head.’ 1 = strongly disagree, 5 = strongly agree."},
+   {name:"plans_to_migrate",label:"Plans to teach overseas",level:"nominal",kind:"Categorical",desc:"‘Do you plan to take a teaching post outside the Caribbean in the next two years?’ Yes, No or Unsure."}
+  ],
+  gen(r){const rows=[],types=["Primary","Secondary","Tertiary"],base={Primary:34,Secondary:29,Tertiary:36},load={Primary:48,Secondary:54,Tertiary:44};
+    for(let i=0;i<45;i++){const t=types[i%3];const w=clamp(Math.round(r.normal(load[t],6)),30,75);
+      const wb=clamp(Math.round(base[t]-0.35*(w-load[t])+r.normal(0,5)),10,50);
+      const pm=r.next(),pYes=clamp(.45-(wb-30)*.025,.08,.7);
+      rows.push({id:"T"+String(i+1).padStart(2,"0"),country:r.pick(COUNTRIES),school_type:t,region:r.chance(.55)?"Urban":"Rural",years_experience:clamp(Math.round(r.normal(12,7)),1,38),
+        workload_hours:w,wellbeing_score:wb,supported:clamp(Math.round(3+(wb-32)/6+r.normal(0,.8)),1,5),plans_to_migrate:pm<pYes?"Yes":pm<pYes+.25?"Unsure":"No"});}
+    return rows;}},
+ {key:"study",title:"University Study Habits Study",cases:"undergraduates",
+  story:"A Caribbean university’s learning centre asked first- to fourth-year undergraduates how many hours they study each week, how much they sleep and whether they work part-time, then matched this with their final exam score in a common course.",
+  codebook:[
+   {name:"id",label:"Student ID",level:"id",kind:"Label",desc:"Code for each student."},
+   {name:"name",label:"First name",level:"id",kind:"Label",desc:"Made-up first name."},
+   {name:"programme",label:"Faculty",level:"nominal",kind:"Categorical",desc:"Education, Science and Technology, Social Sciences, or Humanities."},
+   {name:"year_of_study",label:"Year of study",level:"ordinal",kind:"Categorical (ordered)",desc:"Year 1 to Year 4."},
+   {name:"works_part_time",label:"Works part-time",level:"nominal",kind:"Categorical",desc:"Yes or No."},
+   {name:"study_hours",label:"Study hours per week",level:"ratio",kind:"Numerical, continuous (recorded to the hour)",desc:"Self-reported hours of independent study each week."},
+   {name:"sleep_hours",label:"Sleep per night",level:"ratio",kind:"Numerical, continuous (recorded to the hour)",desc:"Typical hours of sleep per night."},
+   {name:"exam_score",label:"Exam score",level:"interval",kind:"Numerical, discrete",desc:"Final exam percentage."}
+  ],
+  gen(r){const nm=namer(r),rows=[],progs=["Education","Science and Technology","Social Sciences","Humanities"];
+    for(let i=0;i<50;i++){const h=clamp(Math.round(r.normal(10,4)),1,25),pt=r.chance(.4);
+      rows.push({id:"S"+String(i+1).padStart(2,"0"),name:nm(r.chance(.6)?"Girl":"Boy"),programme:r.pick(progs),year_of_study:r.int(1,4),works_part_time:pt?"Yes":"No",study_hours:h,
+        sleep_hours:clamp(Math.round(r.normal(pt?6.5:7.2,1.1)),4,10),exam_score:clamp(Math.round(38+2.4*h-(pt?2:0)+r.normal(0,8)),20,100)});}
+    return rows;}},
+ {key:"access",title:"Device and Internet Access Survey",cases:"secondary students",
+  story:"After school closures pushed learning online, an education district surveyed secondary students about whether they have their own device for schoolwork and internet at home. Students came from urban, peri-urban and rural schools.",
+  codebook:[
+   {name:"id",label:"Student ID",level:"id",kind:"Label",desc:"Code for each student."},
+   {name:"location",label:"School location",level:"nominal",kind:"Categorical",desc:"Urban, Peri-urban or Rural."},
+   {name:"form",label:"Form (year group)",level:"ordinal",kind:"Categorical (ordered)",desc:"Form 1 to Form 5."},
+   {name:"device_access",label:"Own device",level:"nominal",kind:"Categorical",desc:"Has a device of their own for schoolwork: Yes or No."},
+   {name:"internet_home",label:"Internet at home",level:"nominal",kind:"Categorical",desc:"Yes or No."}
+  ],
+  gen(r){const rows=[],plan=[["Urban",80,.8],["Peri-urban",60,.65],["Rural",60,.48]];let i=0;
+    plan.forEach(([loc,n,p])=>{for(let k=0;k<n;k++){i++;const dev=r.chance(p);
+      rows.push({id:"D"+String(i).padStart(3,"0"),location:loc,form:r.int(1,5),device_access:dev?"Yes":"No",internet_home:r.chance(dev?.8:.45)?"Yes":"No"});}});
+    return r.shuffle(rows);}},
+ {key:"exams",title:"CSEC Mock Exams",cases:"students",
+  story:"Two Form 5 classes sat CSEC-style mock exams in Mathematics (Paper 2, marked out of 50) and English A (marked out of 100). Because the papers use different scales, raw marks can’t be compared directly.",
+  codebook:[
+   {name:"id",label:"Student ID",level:"id",kind:"Label",desc:"Code for each student."},
+   {name:"name",label:"First name",level:"id",kind:"Label",desc:"Made-up first name."},
+   {name:"class",label:"Class",level:"nominal",kind:"Categorical",desc:"5A or 5B."},
+   {name:"maths_50",label:"Mathematics mark",level:"interval",kind:"Numerical, discrete",desc:"Mark out of 50."},
+   {name:"english_100",label:"English A mark",level:"interval",kind:"Numerical, discrete",desc:"Mark out of 100."},
+   {name:"attendance_pct",label:"Attendance",level:"ratio",kind:"Numerical, continuous (recorded to the whole %)",desc:"Percentage of school days attended this term."}
+  ],
+  gen(r){const nm=namer(r),rows=[];for(let i=0;i<30;i++){rows.push({id:"E"+String(i+1).padStart(2,"0"),name:nm(r.chance(.5)?"Girl":"Boy"),class:i<15?"5A":"5B",
+    maths_50:clamp(Math.round(r.normal(31,7)),5,50),english_100:clamp(Math.round(r.normal(64,11)),20,100),attendance_pct:clamp(Math.round(r.normal(88,7)),55,100)});}
+    return rows;}},
+ {key:"grade6",title:"Grade 6 National Assessment (PEP-style)",cases:"Grade 6 students",
+  story:"A PEP-style national assessment of Grade 6 students in eight parishes, in public and private schools. Scores in Mathematics and Language Arts are out of 100. Use it to see how a single national average can hide differences between parishes, school sectors and areas.",
+  codebook:[
+   {name:"id",label:"Student ID",level:"id",kind:"Label",desc:"Code for each student."},
+   {name:"parish",label:"Parish",level:"nominal",kind:"Categorical",desc:"Parish where the school is located."},
+   {name:"area",label:"Area",level:"nominal",kind:"Categorical",desc:"Urban or Rural."},
+   {name:"sector",label:"School sector",level:"nominal",kind:"Categorical",desc:"Public or Private."},
+   {name:"gender",label:"Gender",level:"nominal",kind:"Categorical",desc:"Girl or Boy."},
+   {name:"maths",label:"Mathematics score",level:"interval",kind:"Numerical, discrete",desc:"Score out of 100."},
+   {name:"language_arts",label:"Language Arts score",level:"interval",kind:"Numerical, discrete",desc:"Score out of 100."}
+  ],
+  gen(r){const base={"Kingston":62,"St Andrew":66,"St Catherine":61,"Clarendon":56,"Manchester":63,"St James":60,"St Ann":58,"Westmoreland":54},urb={"Kingston":.95,"St Andrew":.8,"St Catherine":.6,"Clarendon":.35,"Manchester":.4,"St James":.55,"St Ann":.35,"Westmoreland":.3};
+    const rows=[];for(let i=0;i<160;i++){const p=PARISHES[i%8],priv=r.chance(.15),area=r.chance(urb[p])?"Urban":"Rural",g=r.chance(.5)?"Girl":"Boy";
+      const b=base[p]+(priv?8:0)+(area==="Urban"?2:-2);
+      rows.push({id:"G"+String(i+1).padStart(3,"0"),parish:p,area,sector:priv?"Private":"Public",gender:g,
+        maths:clamp(Math.round(r.normal(b-2,13)),5,100),language_arts:clamp(Math.round(r.normal(b+(g==="Girl"?4:-2),12)),5,100)});}
+    return r.shuffle(rows);}},
+ {key:"hurricane",title:"Hurricane Season School Closures",cases:"primary schools",
+  story:"After an active hurricane season, a regional education office recorded how many school days each primary school lost to storm damage, flooding or use as a shelter, whether the school ran any online or radio learning during closure, and how much its average reading score changed over the term.",
+  codebook:[
+   {name:"id",label:"School ID",level:"id",kind:"Label",desc:"Code for each school."},
+   {name:"setting",label:"Setting",level:"nominal",kind:"Categorical",desc:"Coastal or Inland."},
+   {name:"remote_learning",label:"Remote learning offered",level:"nominal",kind:"Categorical",desc:"Yes if the school ran online or radio lessons during closure."},
+   {name:"days_closed",label:"Days closed",level:"ratio",kind:"Numerical, discrete",desc:"School days lost to the hurricane season."},
+   {name:"reading_change",label:"Change in reading score",level:"interval",kind:"Numerical, discrete",desc:"End-of-term average reading score minus start-of-term average (points). Negative means scores fell."}
+  ],
+  gen(r){const rows=[];for(let i=0;i<40;i++){const coast=r.chance(.55),rem=r.chance(.45);const days=clamp(Math.round(r.normal(coast?15:9,6)),0,35);
+    rows.push({id:"H"+String(i+1).padStart(2,"0"),setting:coast?"Coastal":"Inland",remote_learning:rem?"Yes":"No",days_closed:days,reading_change:Math.round(3-0.45*days+(rem?2:0)+r.normal(0,2.5))});}
+    return rows;}}
+];
+const DS=Object.fromEntries(DATASETS.map(d=>[d.key,d]));
+const dataCache={};
+function getData(key){
+  const id=key+"#"+store.sampleNo;
+  if(!dataCache[id]) dataCache[id]=DS[key].gen(Rng(hashStr(key)+store.sampleNo*1000003));
+  return dataCache[id];
+}
+const col = (key,name,filter) => getData(key).filter(filter||(()=>true)).map(r=>r[name]);
+function toCSV(key){
+  const rows=getData(key),heads=DS[key].codebook.map(c=>c.name);
+  const q=v=>/[",]/.test(String(v))?`"${String(v).replace(/"/g,'""')}"`:v;
+  return [heads.join(","),...rows.map(r=>heads.map(h=>q(r[h])).join(","))].join("\n");
+}
+function populationReading(){
+  const id="pop#"+store.sampleNo;
+  if(!dataCache[id]){const r=Rng(hashStr("population")+store.sampleNo*97);dataCache[id]=Array.from({length:500},()=>clamp(Math.round(r.normal(55,12)),15,100));}
+  return dataCache[id];
+}
+
+/* ===== journey structure ===== */
+const STAGES=[
+ {n:1,key:"found",title:"Foundations",desc:"The language of quantitative research: data, samples, variables and hypotheses.",color:"var(--s1)"},
+ {n:2,key:"desc",title:"Describing data",desc:"Summarise what is in your sample with tables, averages, spread and shape.",color:"var(--s2)"},
+ {n:3,key:"rel",title:"Looking for relationships",desc:"Measure how two numerical variables move together, and predict one from the other.",color:"var(--s3)"},
+ {n:4,key:"test",title:"Testing ideas",desc:"Use a sample to draw conclusions about a population: confidence intervals and significance tests.",color:"var(--s4)"},
+ {n:5,key:"rep",title:"Reporting your findings",desc:"Judge how big an effect is, pick the right test, and write results up properly.",color:"var(--s5)"}
+];
+const STAGE=Object.fromEntries(STAGES.map(s=>[s.key,s]));
+const LIKERT=["","Strongly disagree","Disagree","Neutral","Agree","Strongly agree"];
+const DECIDE=["Significant: reject H₀","Not significant: fail to reject H₀"];
+const decideTruth = p => p<.05?DECIDE[0]:DECIDE[1];
+const pickRows = (r,key,n,filter) => r.sample(getData(key).filter(filter||(()=>true)),n);
+const bankLink = key => `<a href="#data" data-bank="${key}">${DS[key].title}</a>`;
+
+function devTable(a,name="x"){
+  const m=mean(a);
+  return table([name,`${name} − x̄`,`(${name} − x̄)²`],a.map(x=>[x,fmt(x-m),fmt((x-m)**2)]),[`Σ = ${fmt(sum(a))}`,"0",`Σ = ${fmt(ss(a))}`]);
+}
+function likertFreq(vals){const n=vals.length;let cum=0;return [1,2,3,4,5].map(v=>{const f=vals.filter(x=>x===v).length;cum+=f/n*100;return{v,f,pct:f/n*100,cum};});}
+function corrParts(xs,ys){
+  const mx=mean(xs),my=mean(ys);
+  const rows=xs.map((x,i)=>{const dx=x-mx,dy=ys[i]-my;return{x,y:ys[i],dx,dy,dxdy:dx*dy,dx2:dx*dx,dy2:dy*dy};});
+  const sxy=sum(rows.map(r=>r.dxdy)),sxx=sum(rows.map(r=>r.dx2)),syy=sum(rows.map(r=>r.dy2));
+  const r=sxy/Math.sqrt(sxx*syy),n=xs.length,t=r*Math.sqrt(n-2)/Math.sqrt(1-r*r),p=pT(Math.abs(t),n-2);
+  const b=sxy/sxx,a=my-b*mx;
+  return {mx,my,rows,sxy,sxx,syy,r,n,t,p,df:n-2,b,a};
+}
+function corrTable(c,xn,yn){
+  return table([xn,yn,"x − x̄","y − ȳ","(x − x̄)(y − ȳ)","(x − x̄)²","(y − ȳ)²"],
+    c.rows.map(r=>[r.x,r.y,fmt(r.dx),fmt(r.dy),fmt(r.dxdy),fmt(r.dx2),fmt(r.dy2)]),
+    ["","","","",`Σ = ${fmt(c.sxy)}`,`Σ = ${fmt(c.sxx)}`,`Σ = ${fmt(c.syy)}`]);
+}
+const strengthLabel = r => {const a=Math.abs(r);return a<.3?"Weak (below .3)":a<.5?"Moderate (.3 to .5)":"Strong (.5 or above)";};
+const STRENGTH=["Weak (below .3)","Moderate (.3 to .5)","Strong (.5 or above)"];
+
+const LESSONS=[];
+
+/* ---------- STAGE 1: FOUNDATIONS ---------- */
+LESSONS.push({
+ id:"what-is-statistics",stage:"found",title:"What is statistics?",blurb:"Populations, samples, and the two big families of statistics.",
+ intro:"Before any calculation, you need the vocabulary researchers use to talk about data and where it comes from.",
+ terms:[
+  ["Statistics","The science of collecting, organising, describing and interpreting numerical data so we can answer questions."],
+  ["Data","The pieces of information we collect, such as test scores, ages or survey answers. One piece is a data point."],
+  ["Population","Everyone (or everything) your research question is about, for example all Grade 4 students in Jamaica."],
+  ["Sample","The smaller group you actually collect data from. A good sample represents the population fairly."],
+  ["Parameter","A number that describes a whole population, such as the true average reading score of all Grade 4 students. Usually unknown."],
+  ["Statistic","A number calculated from a sample. We use statistics to estimate parameters."],
+  ["Descriptive statistics","Numbers, tables and charts that summarise the data you have: averages, spread, percentages, graphs."],
+  ["Inferential statistics","Methods that use a sample to draw conclusions about a population, such as confidence intervals and t-tests."],
+  ["Sampling variation","Different samples from the same population give slightly different results. Inferential statistics help you judge whether a result is bigger than this natural wobble."]
+ ],
+ why:"Statistics turns a pile of numbers into evidence. Descriptive statistics tell you what happened in your sample. Inferential statistics tell you how confident you can be that the same thing holds beyond your sample. Almost every quantitative study uses both.",
+ study:"In the Bilingual Reading Programme Study, the researchers can’t test every Grade 4 student in Jamaica, so they test 60 (the sample). The average post-test score of those 60 is a statistic. They use it to estimate the average for all similar Grade 4 students (the parameter), and they use a t-test to decide whether the programme’s effect is real or just sampling variation.",
+ dataset:"reading",
+ activity:{type:"custom",render:el=>{renderSort(el,"what-is-statistics",[
+   {q:"‘The average age of the 120 teachers we surveyed was 38.’",options:["Descriptive","Inferential"],a:0,why:"It only summarises the people who were actually surveyed."},
+   {q:"‘Based on our sample, we are 95% confident the national average is between 61 and 67.’",options:["Descriptive","Inferential"],a:1,why:"It uses a sample to make a claim about the whole population."},
+   {q:"‘64% of students in our class own a smartphone.’",options:["Descriptive","Inferential"],a:0,why:"A percentage of the people you measured is a summary of your data."},
+   {q:"‘Programme students scored significantly higher than the control group (p = .01).’",options:["Descriptive","Inferential"],a:1,why:"A significance test asks whether the difference would hold beyond this sample."},
+   {q:"A researcher studies 300 students chosen from all 12,000 secondary students in a parish. The 12,000 students are the…",options:["Population","Sample"],a:0,why:"The population is everyone the question is about."},
+   {q:"The average score of those 300 students is a…",options:["Statistic","Parameter"],a:0,why:"It comes from a sample, so it is a statistic. The true average of all 12,000 would be the parameter."}
+  ],"Descriptive or inferential?");
+  renderSamplingDemo(el);}}
+});
+LESSONS.push({
+ id:"variables",stage:"found",title:"Variables and levels of measurement",blurb:"Nominal, ordinal, interval and ratio data, and why it decides your statistics.",
+ intro:"Every column in a data set is a variable. How that variable was measured decides which averages, charts and tests you are allowed to use.",
+ terms:[
+  ["Variable","Any characteristic that can take different values from person to person, such as age, gender or test score."],
+  ["Independent variable (IV)","The variable you think causes or explains a change. In an experiment, it is the one you manipulate (e.g. programme or no programme)."],
+  ["Dependent variable (DV)","The outcome you measure to see whether it changes (e.g. reading score)."],
+  ["Categorical variable","Values are groups or labels, such as school type or yes/no answers."],
+  ["Numerical (quantitative) variable","Values are numbers that represent an amount, such as hours or scores."],
+  ["Discrete","Countable whole values only, such as number of books borrowed."],
+  ["Continuous","Can take any value in a range, such as time or height, even if we round it when recording."],
+  ["Nominal",LEVEL_TEXT.nominal+" Example: school type."],
+  ["Ordinal",LEVEL_TEXT.ordinal+" Example: a 1–5 agreement scale or year of study."],
+  ["Interval",LEVEL_TEXT.interval+" Example: temperature in °C, or most test scores."],
+  ["Ratio",LEVEL_TEXT.ratio+" Example: hours studied, years of experience."],
+  ["Likert scale","A set of statements rated on an agreement scale (often 1–5). A single item is ordinal; a total of several items is usually treated as interval."]
+ ],
+ why:"The level of measurement tells you which statistics make sense. You can’t calculate a mean of school types, and a median of yes/no answers means nothing. Getting this right at the start stops you from choosing the wrong test later.",
+ study:"In the Caribbean Teacher Wellbeing Survey, school type is nominal, ‘feels supported’ (1–5) is ordinal, the wellbeing total is treated as interval, and weekly workload hours is ratio. So the researcher reports school type as percentages, ‘feels supported’ with a median, and workload with a mean and standard deviation.",
+ extra:()=>`<h3>What you can calculate at each level</h3>${table(["Level","Example","Summaries you can use","Typical tests"],[
+   ["Nominal","School type, Yes/No","Counts, percentages, mode","Chi-square"],
+   ["Ordinal","1–5 agreement, year of study","All of the above, plus median, IQR, percentiles","Non-parametric tests, e.g. Mann–Whitney U, Spearman’s rho"],
+   ["Interval","Test scores, scale totals","All of the above, plus mean and standard deviation","t-tests, ANOVA, Pearson’s r"],
+   ["Ratio","Hours, years, attendance","All of the above, and ‘twice as much’ comparisons make sense","t-tests, ANOVA, Pearson’s r, regression"]
+  ].map(r=>r.map(c=>`<span style="white-space:normal">${c}</span>`)))}`,
+ dataset:"wellbeing",
+ activity:{type:"custom",render:el=>renderLevelSort(el)}
+});
+LESSONS.push({
+ id:"hypotheses",stage:"found",title:"Research questions and hypotheses",blurb:"IVs, DVs, null and alternative hypotheses.",
+ intro:"Quantitative research starts with a question that can be answered with numbers, and a prediction that can be tested.",
+ terms:[
+  ["Research question","The specific question your study answers, e.g. ‘Does the bilingual reading programme improve Grade 4 reading scores?’"],
+  ["Hypothesis","A testable prediction about the relationship between variables."],
+  ["Null hypothesis (H₀)","The ‘nothing is going on’ statement: no difference, no relationship. Statistical tests are built to test H₀."],
+  ["Alternative hypothesis (H₁)","What you expect if H₀ is wrong: there is a difference or relationship."],
+  ["Directional (one-tailed) hypothesis","Predicts the direction, e.g. ‘programme students will score higher’."],
+  ["Non-directional (two-tailed) hypothesis","Predicts a difference without saying which way, e.g. ‘scores will differ’. Most research uses two-tailed tests."],
+  ["Operational definition","Exactly how you will measure a concept, e.g. ‘reading achievement’ = score on a 100-point reading test."],
+  ["Confounding variable","Another variable that could explain your result, e.g. programme students also having more experienced teachers."]
+ ],
+ why:"Clear hypotheses tell you what to measure, which variable is the IV and which is the DV, and which statistical test to run. The test then tells you whether your data give enough evidence to reject H₀.",
+ study:"Bilingual Reading Programme Study. Question: ‘Does a 10-week programme that uses Jamaican Creole alongside English improve Grade 4 English reading scores?’ IV: group (programme or regular lessons). DV: post-test reading score. H₀: there is no difference in mean post-test scores between the groups. H₁: the groups’ mean post-test scores differ.",
+ dataset:"reading",
+ activity:{type:"custom",render:el=>renderSort(el,"hypotheses",[
+   {q:"Study: ‘Does sleep affect exam performance?’ Which is the independent variable?",options:["Sleep hours","Exam score","Programme"],a:0,why:"Sleep is the variable thought to explain differences in exam scores."},
+   {q:"In the same study, which is the dependent variable?",options:["Sleep hours","Exam score","Year of study"],a:1,why:"Exam score is the outcome being measured."},
+   {q:"Which of these is a null hypothesis?",options:["There is no relationship between weekly study hours and exam scores.","Students who study more get higher exam scores.","Studying causes higher grades."],a:0,why:"H₀ always states no difference or no relationship."},
+   {q:"‘Rural teachers will report lower wellbeing than urban teachers.’ This hypothesis is…",options:["Directional","Non-directional"],a:0,why:"It says which group will be lower."},
+   {q:"‘Wellbeing scores will differ between primary, secondary and tertiary teachers.’ This hypothesis is…",options:["Directional","Non-directional"],a:1,why:"It predicts a difference but not which group will be higher."},
+   {q:"A researcher measures ‘teacher stress’ as the number of sick days taken in a term. This is an example of…",options:["An operational definition","A null hypothesis","A confounding variable"],a:0,why:"It defines exactly how an abstract idea will be measured."},
+   {q:"Programme students also had more experienced teachers. Teacher experience here could be a…",options:["Confounding variable","Dependent variable","Parameter"],a:0,why:"It offers another explanation for higher scores, so it confounds the result."}
+  ],"Spot the parts of a study")}
+});
+
+/* ---------- STAGE 2: DESCRIBING DATA ---------- */
+LESSONS.push({
+ id:"frequency-tables",stage:"desc",title:"Frequency tables and distributions",blurb:"Counts, percentages and charts: the first thing you do with data.",
+ intro:"A frequency table counts how often each value appears. It is the right summary for nominal and ordinal data, and a quick quality check for everything else.",
+ terms:[
+  ["Frequency (f)","How many times a value appears."],
+  ["Relative frequency","The frequency as a percentage of the total: f ÷ n × 100."],
+  ["Cumulative percentage","A running total of the percentages, useful for statements like ‘70% chose 3 or lower’."],
+  ["Distribution","The pattern of how values are spread across the possible range."],
+  ["Bar chart","Separate bars for categories. Use it for nominal and ordinal data."],
+  ["Histogram","Touching bars for ranges of a numerical variable. Use it to see the shape of continuous data."]
+ ],
+ why:"Researchers start with frequency tables because they show how answers are spread, reveal data entry errors (like a ‘7’ on a 1–5 scale), and give the headline percentages readers want.",
+ study:"A survey report might say: ‘Of 45 teachers across Jamaica, Trinidad and Tobago, Barbados and Guyana, 18 (40%) agreed or strongly agreed that they felt supported by their head.’ That sentence comes straight from a frequency table.",
+ formula:["Percentage = f ÷ n × 100","Cumulative % = running total of the percentages"],
+ dataset:"wellbeing",
+ sample:r=>{const rows=pickRows(r,"wellbeing",20);return{vals:rows.map(x=>x.supported),ctx:"‘I feel supported by my principal or head’ (1 = strongly disagree, 5 = strongly agree). Answers from a random sample of 20 teachers."};},
+ show:d=>tiles(d.vals),
+ steps:d=>{const F=likertFreq(d.vals),n=d.vals.length,ag=F[3].f+F[4].f;return[
+  ["Count the responses","You need the total (n) before you can work out any percentage.",`There are <mark>n = ${n}</mark> responses.`],
+  ["Tally each answer","Counting each option shows the spread and catches impossible values.",table(["Value","Meaning","f"],F.map(x=>[x.v,`<span style="white-space:normal">${LIKERT[x.v]}</span>`,x.f]),["","Total",n])],
+  ["Turn counts into percentages","Percentages let you compare groups of different sizes.",table(["Value","f","%","Cumulative %"],F.map(x=>[x.v,x.f,fmt(x.pct,1),fmt(x.cum,1)]),["Total",n,"100",""])],
+  ["Picture the distribution","A bar chart makes the pattern clear at a glance. Use bars with gaps because these are categories.",barChart(F.map(x=>x.v),F.map(x=>x.f),{label:"Bar chart of responses",xTitle:"Response (1 to 5)"})],
+  ["Pull out the headline","Readers usually want to know how many agreed.",`Agree (4) + Strongly agree (5) = ${F[3].f} + ${F[4].f} = ${ag} of ${n} = <mark>${fmt(ag/n*100,1)}%</mark>`]];},
+ report:d=>{const F=likertFreq(d.vals),n=d.vals.length,ag=F[3].f+F[4].f,dis=F[0].f+F[1].f;return `Of the ${n} teachers, ${ag} (${fmt(ag/n*100,1)}%) agreed or strongly agreed that they felt supported, while ${dis} (${fmt(dis/n*100,1)}%) disagreed or strongly disagreed.`;},
+ fields:[1,2,3,4,5].map(v=>({k:"f"+v,label:`How many chose ${v} (${LIKERT[v].toLowerCase()})`,t:d=>d.vals.filter(x=>x===v).length,tol:{abs:0},hint:()=>"Count carefully. Ordering the values first helps."}))
+  .concat([{k:"pct",label:"% who chose 4 or 5",t:d=>d.vals.filter(x=>x>=4).length/d.vals.length*100,tol:{abs:.5},hint:d=>`Add the 4s and 5s, divide by ${d.vals.length}, multiply by 100.`}])
+});
+LESSONS.push({
+ id:"central-tendency",stage:"desc",title:"Measures of central tendency",blurb:"Mean, median and mode, and when to report each.",
+ intro:"A measure of central tendency gives one ‘typical’ value for a variable. There are three, and each suits different data.",
+ terms:[
+  ["Measure of central tendency","A single value that represents the centre or typical value of a set of data."],
+  ["Mean (x̄ or M)","The arithmetic average: add every value and divide by how many there are."],
+  ["Median (Mdn)","The middle value when the data are in order. With an even count, average the two middle values."],
+  ["Mode","The most frequent value. A set can have one mode, several, or none."],
+  ["Outlier","A value far away from the rest. It pulls the mean but barely moves the median."]
+ ],
+ why:"One typical value lets you summarise a whole variable and compare groups. Choosing the right one matters. The mean uses every value but is pulled by extreme scores. The median resists extreme scores. The mode is the only option for nominal data.",
+ study:"In the University Study Habits Study, most students study 8 to 12 hours a week, but one reports 25. That single student lifts the mean, while the median hardly changes. When data are skewed like this, a careful researcher reports the median, or both.",
+ extra:()=>`<h3>Which one should I report?</h3>${table(["Data","Report"],[["Nominal (categories)","Mode"],["Ordinal (ordered categories)","Median (and mode)"],["Interval or ratio, roughly symmetric","Mean (with SD)"],["Interval or ratio, skewed or with outliers","Median (with IQR)"]])}`,
+ formula:["Mean: x̄ = Σx ÷ n","Median: the value at position (n + 1) ÷ 2 in the ordered list","Mode: the value with the highest frequency"],
+ dataset:"study",
+ sample:r=>{let vals;for(let k=0;k<80;k++){vals=pickRows(r,"study",r.pick([7,8])).map(x=>x.study_hours);if(modes(vals).length===1)break;}return{vals,ctx:"Weekly study hours reported by a random sample of students."};},
+ show:d=>tiles(d.vals),
+ steps:d=>{const a=d.vals,n=a.length,s=sorted(a),md=median(a),mo=modes(a),m=mean(a),h=Math.floor(n/2);return[
+  ["Find the mean","The mean uses every value, so it is the best summary when data are fairly symmetric.",`${a.join(" + ")} = ${sum(a)}<br>${sum(a)} ÷ ${n} = <mark>${fmt(m)}</mark>`],
+  ["Put the values in order","The median and mode are much easier to see in an ordered list.",s.join(", ")],
+  ["Find the median","The middle value is not pulled by extreme scores.",n%2?`n = ${n} is odd, so the median is value number ${(n+1)/2}: <mark>${fmt(md)}</mark>`:`n = ${n} is even, so average values ${h} and ${h+1}: (${s[h-1]} + ${s[h]}) ÷ 2 = <mark>${fmt(md)}</mark>`],
+  ["Find the mode","The mode shows the most common answer.",`${mo.length?mo[0]:"No value"} appears ${mo.length?freq(a).get(mo[0])+" times":"more than once"}, so the mode is <mark>${mo.length?mo[0]:"none"}</mark>.`],
+  ["Compare them","A big gap between mean and median signals skewed data, where the median is safer to report.",`Mean ${fmt(m)} and median ${fmt(md)} differ by ${fmt(Math.abs(m-md))} hours. ${Math.abs(m-md)<(Math.max(...a)-Math.min(...a))*.1?"They are close, so the mean is a fair summary.":"That is a noticeable gap, so report the median as well."}`]];},
+ report:d=>`Students reported studying a mean of ${fmt(mean(d.vals))} hours per week (Mdn = ${fmt(median(d.vals))}, mode = ${modes(d.vals)[0]}).`,
+ fields:[
+  {k:"mean",label:"Mean",t:d=>mean(d.vals),hint:d=>`Add all ${d.vals.length} values and divide by ${d.vals.length}.`},
+  {k:"median",label:"Median",t:d=>median(d.vals),hint:(d,u)=>close(u,mean(d.vals))?"That’s the mean. Order the values and take the middle one.":d.vals.length%2?`Order the values. The median is value number ${(d.vals.length+1)/2}.`:`Order the values and average values ${d.vals.length/2} and ${d.vals.length/2+1}.`},
+  {k:"mode",label:"Mode",t:d=>modes(d.vals)[0],tol:{abs:0},hint:()=>"Which value appears most often?"}
+ ]
+});
+LESSONS.push({
+ id:"variability",stage:"desc",title:"Measures of variability (spread)",blurb:"Range, interquartile range, variance and standard deviation.",
+ intro:"An average tells you the centre. Spread tells you how much people differ from that centre, which is just as important.",
+ terms:[
+  ["Variability (spread)","How much the values differ from each other and from the centre."],
+  ["Range","Largest value minus smallest value."],
+  ["Quartiles (Q1, Q3)","Q1 cuts off the lowest 25% of ordered values; Q3 cuts off the highest 25%."],
+  ["Interquartile range (IQR)","Q3 − Q1: the spread of the middle half of the data. Pair it with the median."],
+  ["Variance (s²)","The average squared distance from the mean."],
+  ["Standard deviation (s or SD)","The square root of the variance: the typical distance from the mean, in the original units. Pair it with the mean."],
+  ["n − 1","When you calculate variance from a sample, divide by n − 1 rather than n. This corrects a sample’s tendency to underestimate the population’s spread."]
+ ],
+ why:"Averages alone hide how much people differ. Two classes can both average 65, but in one everyone scored 60 to 70 and in the other scores ran from 30 to 95. Spread tells you how consistent the data are, and the standard deviation feeds into almost every inferential test you will meet later.",
+ study:"Results tables in UWI theses and Caribbean journal articles usually report M and SD side by side, for example ‘Exam scores: M = 64.2, SD = 11.8’. Readers use the SD to judge how typical the mean is. Roughly two-thirds of scores in a normal distribution lie within one SD of the mean.",
+ formula:["Range = maximum − minimum","IQR = Q3 − Q1","s² = Σ(x − x̄)² ÷ (n − 1)","s = √s²"],
+ dataset:"study",
+ sample:r=>({vals:pickRows(r,"study",r.pick([9,10])).map(x=>x.exam_score),ctx:"Final exam scores (%) for a random sample of students."}),
+ show:d=>tiles(d.vals),
+ steps:d=>{const a=d.vals,n=a.length,s=sorted(a),q=quartiles(a),m=mean(a),v=variance(a);return[
+  ["Find the range","A quick first look at the full spread. One extreme score can stretch it, so it is never the only measure.",`${Math.max(...a)} − ${Math.min(...a)} = <mark>${Math.max(...a)-Math.min(...a)}</mark>`],
+  ["Find the quartiles","Q1 and Q3 mark the edges of the middle 50% of scores.",`In order: ${s.join(", ")}<br>${n%2?"Leave out the median, then split":"Split"} into a lower half (${q.lower.join(", ")}) and an upper half (${q.upper.join(", ")}).<br>Q1 = median of the lower half = <mark>${fmt(q.q1)}</mark>, Q3 = median of the upper half = <mark>${fmt(q.q3)}</mark>`],
+  ["Find the IQR","The middle half’s spread is not affected by extreme scores, so it pairs with the median.",`${fmt(q.q3)} − ${fmt(q.q1)} = <mark>${fmt(q.q3-q.q1)}</mark>`],
+  ["Find each score’s distance from the mean","Variance is built from how far each score sits from the mean.",`Mean = ${sum(a)} ÷ ${n} = ${fmt(m)}${devTable(a)}`],
+  ["Calculate the variance","Squaring stops negative and positive distances cancelling out. Divide by n − 1 because this is a sample.",`${fmt(ss(a))} ÷ (${n} − 1) = ${fmt(ss(a))} ÷ ${n-1} = <mark>${fmt(v)}</mark>`],
+  ["Calculate the standard deviation","The square root puts spread back into exam percentage points, so it can sit next to the mean.",`√${fmt(v)} = <mark>${fmt(Math.sqrt(v))}</mark>`]];},
+ report:d=>{const a=d.vals,q=quartiles(a);return `Exam scores ranged from ${Math.min(...a)} to ${Math.max(...a)} (M = ${fmt(mean(a))}, SD = ${fmt(sd(a))}; Mdn = ${fmt(median(a))}, IQR = ${fmt(q.q3-q.q1)}).`;},
+ fields:[
+  {k:"range",label:"Range",t:d=>Math.max(...d.vals)-Math.min(...d.vals),hint:()=>"Largest minus smallest."},
+  {k:"q1",label:"Q1",t:d=>quartiles(d.vals).q1,hint:d=>`Order the values, take the lower ${Math.floor(d.vals.length/2)} values${d.vals.length%2?" (leave out the median)":""}, and find their median.`},
+  {k:"q3",label:"Q3",t:d=>quartiles(d.vals).q3,hint:d=>`Take the upper ${Math.floor(d.vals.length/2)} values and find their median.`},
+  {k:"iqr",label:"IQR",t:d=>{const q=quartiles(d.vals);return q.q3-q.q1;},hint:()=>"Q3 − Q1."},
+  {k:"var",label:"Variance (s²)",t:d=>variance(d.vals),hint:(d,u)=>close(u,variance(d.vals,false))?"You divided by n. Divide by n − 1 for a sample.":"Square each distance from the mean, add them, divide by n − 1."},
+  {k:"sd",label:"Standard deviation (s)",t:d=>sd(d.vals),hint:(d,u)=>close(u,variance(d.vals))?"That’s the variance. Take its square root.":"Take the square root of the variance."}
+ ]
+});
+LESSONS.push({
+ id:"shape-outliers",stage:"desc",title:"Shape, skew and outliers",blurb:"Is the data normal, skewed, or hiding an odd value?",
+ intro:"Before you trust a mean or run a test, look at the shape of the data and check for outliers.",
+ terms:[
+  ["Normal distribution","A symmetric, bell-shaped distribution where mean, median and mode are equal. Many tests assume data are roughly normal."],
+  ["Skewness","Lack of symmetry. Positive (right) skew has a long tail of high values; negative (left) skew has a long tail of low values."],
+  ["Outlier","A value unusually far from the others. It may be a real but rare case, or a data entry error."],
+  ["Fences (1.5 × IQR rule)","Values below Q1 − 1.5 × IQR or above Q3 + 1.5 × IQR are flagged as possible outliers."],
+  ["Boxplot","A chart that shows the median, quartiles and any outliers. It is built from the same numbers you calculate here."]
+ ],
+ why:"t-tests, ANOVA and Pearson’s r assume roughly normal data without extreme outliers. Checking shape tells you whether to trust the mean, whether to report the median instead, and whether an odd value needs checking against the original records.",
+ study:"In the University Study Habits Study, a student writing ‘70’ hours a week is probably a typing error for 7. Researchers check outliers against the original survey before deciding to correct, keep or remove them, and they say what they did in the methods section.",
+ formula:["Lower fence = Q1 − 1.5 × IQR","Upper fence = Q3 + 1.5 × IQR","Skew coefficient ≈ 3(x̄ − Mdn) ÷ s (values beyond ±0.5 suggest noticeable skew)"],
+ dataset:"study",
+ sample:r=>{const vals=pickRows(r,"study",9).map(x=>x.study_hours);if(r.chance(.7))vals.push(Math.max(...vals)+r.int(9,15));else vals.push(pickRows(r,"study",1)[0].study_hours);return{vals:r.shuffle(vals),ctx:"Weekly study hours reported by 10 students. Look closely: one answer may be unusual."};},
+ show:d=>tiles(d.vals),
+ steps:d=>{const a=d.vals,q=quartiles(a),iqr=q.q3-q.q1,lo=q.q1-1.5*iqr,hi=q.q3+1.5*iqr,out=a.filter(x=>x<lo||x>hi),m=mean(a),md=median(a),s=sd(a),sk=3*(m-md)/s;return[
+  ["Order the values and find the quartiles","The fences are built from the quartiles.",`${sorted(a).join(", ")}<br>Q1 = ${fmt(q.q1)}, Q3 = ${fmt(q.q3)}, IQR = <mark>${fmt(iqr)}</mark>`],
+  ["Work out the fences","Anything beyond the fences is far from the middle half of the data.",`Lower fence = ${fmt(q.q1)} − 1.5 × ${fmt(iqr)} = <mark>${fmt(lo)}</mark><br>Upper fence = ${fmt(q.q3)} + 1.5 × ${fmt(iqr)} = <mark>${fmt(hi)}</mark>`],
+  ["Flag any outliers","Outliers can distort the mean and some tests, so they must be checked.",out.length?`<mark>${out.length}</mark> value${out.length>1?"s":""} outside the fences: ${out.join(", ")}`:"No values fall outside the fences, so there are <mark>0</mark> outliers."],
+  ["Compare the mean and median","In skewed data the mean is pulled toward the long tail.",`Mean = ${fmt(m)}, median = ${fmt(md)}, SD = ${fmt(s)}<br>Skew coefficient = 3 × (${fmt(m)} − ${fmt(md)}) ÷ ${fmt(s)} = <mark>${fmt(sk)}</mark>`],
+  ["Describe the shape","This decides how you summarise and test the data.",Math.abs(sk)<.5?"The coefficient is between −0.5 and 0.5, so the data are <mark>roughly symmetric</mark>.":sk>0?"The coefficient is above 0.5, so the data are <mark>positively skewed</mark> (a tail of high values).":"The coefficient is below −0.5, so the data are <mark>negatively skewed</mark> (a tail of low values)."],
+  ["Decide what to do","Your choices here should be reported in your methods.",out.length||Math.abs(sk)>=.5?"Check the unusual value against the original survey. Report the median and IQR, or run the analysis with and without the outlier and say whether the conclusion changes.":"The mean and SD are fair summaries, and tests that assume normality are reasonable."]];},
+ report:d=>{const a=d.vals,q=quartiles(a),iqr=q.q3-q.q1,out=a.filter(x=>x<q.q1-1.5*iqr||x>q.q3+1.5*iqr),sk=3*(mean(a)-median(a))/sd(a);return `Study hours were ${Math.abs(sk)<.5?"roughly symmetric":sk>0?"positively skewed":"negatively skewed"} (skew coefficient = ${fmt(sk)})${out.length?` with ${out.length} outlier${out.length>1?"s":""} (${out.join(", ")} hours)`:" with no outliers"}, so ${out.length||Math.abs(sk)>=.5?`the median (Mdn = ${fmt(median(a))}) and IQR (${fmt(iqr)}) are reported`:`the mean (M = ${fmt(mean(a))}) and SD (${fmt(sd(a))}) are reported`}.`;},
+ fields:[
+  {k:"q1",label:"Q1",t:d=>quartiles(d.vals).q1,hint:()=>"Median of the lower five values."},
+  {k:"q3",label:"Q3",t:d=>quartiles(d.vals).q3,hint:()=>"Median of the upper five values."},
+  {k:"lo",label:"Lower fence",t:d=>{const q=quartiles(d.vals);return q.q1-1.5*(q.q3-q.q1);},hint:()=>"Q1 − 1.5 × IQR."},
+  {k:"hi",label:"Upper fence",t:d=>{const q=quartiles(d.vals);return q.q3+1.5*(q.q3-q.q1);},hint:()=>"Q3 + 1.5 × IQR."},
+  {k:"out",label:"Number of outliers",t:d=>{const q=quartiles(d.vals),i=q.q3-q.q1;return d.vals.filter(x=>x<q.q1-1.5*i||x>q.q3+1.5*i).length;},tol:{abs:0},hint:()=>"Count values below the lower fence or above the upper fence."},
+  {k:"sk",label:"Skew coefficient",t:d=>3*(mean(d.vals)-median(d.vals))/sd(d.vals),hint:()=>"3 × (mean − median) ÷ SD. Use the sample SD."},
+  {k:"shape",label:"Shape",type:"choice",options:["Roughly symmetric","Positively skewed","Negatively skewed"],t:d=>{const sk=3*(mean(d.vals)-median(d.vals))/sd(d.vals);return Math.abs(sk)<.5?"Roughly symmetric":sk>0?"Positively skewed":"Negatively skewed";},hint:()=>"Use the ±0.5 rule on your skew coefficient."}
+ ]
+});
+LESSONS.push({
+ id:"z-scores",stage:"desc",title:"z-scores and the normal curve",blurb:"Compare scores measured on different scales.",
+ intro:"A z-score tells you how many standard deviations a value is above or below the mean. It puts different measures on one common scale.",
+ terms:[
+  ["z-score (standard score)","(value − mean) ÷ SD. Positive means above the mean, negative means below."],
+  ["Standardising","Converting raw scores to z-scores so they can be compared across tests or scales."],
+  ["Normal curve","The bell-shaped curve. If data are roughly normal, z-scores tell you what percentage of people score below a value."],
+  ["Percentile","The percentage of scores below a given value. The 80th percentile beats 80% of scores."],
+  ["68–95–99.7 rule","In a normal distribution, about 68% of scores fall within 1 SD of the mean, 95% within 2 SD, and 99.7% within 3 SD."]
+ ],
+ why:"Raw marks on different scales can’t be compared. A z-score lets you compare a maths mark out of 50 with an English mark out of 100, estimate percentiles, and spot unusual cases. Researchers often flag |z| > 3 as a possible outlier.",
+ study:"Exam bodies, scholarship committees and university admissions offices standardise scores so results from different papers or years can be compared fairly. In research, standardised scores are also how many test publishers report results, for example a reading age or a scaled score.",
+ formula:["z = (x − x̄) ÷ s","Percentile ≈ area under the normal curve below z"],
+ dataset:"exams",
+ sample:r=>{const rows=getData("exams"),st=r.pick(rows);const M=col("exams","maths_50"),E=col("exams","english_100");
+   return{st,mM:mean(M),sM:sd(M),mE:mean(E),sE:sd(E),ctx:`${st.name} (${st.id}) scored ${st.maths_50}/50 in Mathematics and ${st.english_100}/100 in English. The class figures (all 30 students) are below.`};},
+ show:d=>table(["Paper","Student’s mark","Class mean","Class SD"],[["Mathematics Paper 2 (/50)",d.st.maths_50,fmt(d.mM),fmt(d.sM)],["English A (/100)",d.st.english_100,fmt(d.mE),fmt(d.sE)]]),
+ steps:d=>{const zm=(d.st.maths_50-d.mM)/d.sM,ze=(d.st.english_100-d.mE)/d.sE,best=zm>=ze?"Mathematics":"English",p=normalCdf(zm)*100;return[
+  ["Standardise the maths mark","Subtracting the mean shows above or below average; dividing by the SD puts it in ‘SD units’.",`z = (${d.st.maths_50} − ${fmt(d.mM)}) ÷ ${fmt(d.sM)} = <mark>${fmt(zm)}</mark>`],
+  ["Standardise the English mark","Now both marks are on the same scale.",`z = (${d.st.english_100} − ${fmt(d.mE)}) ÷ ${fmt(d.sE)} = <mark>${fmt(ze)}</mark>`],
+  ["Compare the two","A higher z means a stronger result relative to classmates, whatever the raw mark.",`${fmt(zm)} vs ${fmt(ze)}: the stronger result relative to the class is <mark>${best}</mark>.`],
+  ["Turn the maths z-score into a percentile","Percentiles are easier for parents, teachers and readers to understand.",`From the normal curve, the area below z = ${fmt(zm)} is about <mark>${fmt(p,1)}%</mark>. So this student is expected to beat about ${fmt(p,0)}% of similar students.${normalCurve(zm)}`],
+  ["Read it with the 68–95–99.7 rule","This tells you whether a score is ordinary or unusual.",Math.abs(zm)<1?"The maths z-score is within 1 SD of the mean, like about 68% of students: a typical result.":Math.abs(zm)<2?"The maths z-score is between 1 and 2 SD from the mean: noticeably "+(zm>0?"above":"below")+" average, but not unusual.":"The maths z-score is more than 2 SD from the mean: only about 5% of students score this far out."]];},
+ report:d=>{const zm=(d.st.maths_50-d.mM)/d.sM,ze=(d.st.english_100-d.mE)/d.sE;return `${d.st.name}’s mathematics mark (${d.st.maths_50}) was ${fmt(Math.abs(zm))} SD ${zm>=0?"above":"below"} the class mean (z = ${fmt(zm)}), compared with z = ${fmt(ze)} in English A.`;},
+ fields:[
+  {k:"zm",label:"z for Mathematics",t:d=>(d.st.maths_50-d.mM)/d.sM,tol:{abs:.02},hint:()=>"(mark − class mean) ÷ class SD."},
+  {k:"ze",label:"z for English",t:d=>(d.st.english_100-d.mE)/d.sE,tol:{abs:.02},hint:()=>"(mark − class mean) ÷ class SD."},
+  {k:"best",label:"Relatively stronger paper",type:"choice",options:["Mathematics","English"],t:d=>((d.st.maths_50-d.mM)/d.sM)>=((d.st.english_100-d.mE)/d.sE)?"Mathematics":"English",hint:()=>"Pick the paper with the higher z-score."},
+  {k:"pct",label:"Maths percentile (%)",t:d=>normalCdf((d.st.maths_50-d.mM)/d.sM)*100,tol:{abs:2},hint:()=>"Look up your maths z in a normal table (area below z) and multiply by 100."}
+ ]
+});
+function normalCurve(z){
+  const W=520,H=150,pl=10,pr=10,pb=26,X=v=>pl+(v+3.5)/7*(W-pl-pr),Y=v=>H-pb-v/0.4*(H-pb-10);
+  let path="",area=`M${X(-3.5)},${Y(0)}`;
+  for(let v=-3.5;v<=3.5001;v+=.05){const y=Math.exp(-v*v/2)/Math.sqrt(2*Math.PI);path+=(path?"L":"M")+X(v)+","+Y(y);if(v<=z)area+=`L${X(v)},${Y(y)}`;}
+  area+=`L${X(Math.min(z,3.5))},${Y(0)}Z`;
+  const ticks=[-3,-2,-1,0,1,2,3].map(t=>`<text x="${X(t)}" y="${H-8}" text-anchor="middle">${t}</text>`).join("");
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Normal curve shaded below z = ${fmt(z)}"><path d="${area}" fill="var(--stage,var(--accent))" fill-opacity=".3"/><path d="${path}" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="${X(z)}" x2="${X(z)}" y1="10" y2="${H-pb}" stroke="var(--pen)" stroke-width="2"/>${ticks}</svg>`;
+}
+
+/* ---------- STAGE 3: RELATIONSHIPS ---------- */
+function xySample(r,n){let rows,c;for(let k=0;k<50;k++){rows=pickRows(r,"study",n);c=corrParts(rows.map(x=>x.study_hours),rows.map(x=>x.exam_score));if(c.sxx>0&&c.syy>0&&Math.abs(c.r)<.995)break;}return rows;}
+const xyShow = d => table(["Student","Study hours (x)","Exam score (y)"],d.rows.map(r=>[r.name,r.study_hours,r.exam_score]));
+LESSONS.push({
+ id:"correlation",stage:"rel",title:"Correlation (Pearson’s r)",blurb:"How strongly do two variables move together?",
+ intro:"Correlation measures the direction and strength of a straight-line relationship between two numerical variables measured on the same people.",
+ terms:[
+  ["Correlation","A relationship where two variables tend to change together."],
+  ["Pearson’s r","A number from −1 to +1 showing the direction and strength of a linear relationship. 0 means no linear relationship."],
+  ["Positive correlation","As one variable goes up, the other tends to go up."],
+  ["Negative correlation","As one variable goes up, the other tends to go down."],
+  ["Scatterplot","A graph with one dot per person, plotting one variable against the other. Always draw it before calculating r."],
+  ["Coefficient of determination (r²)","The proportion of variation in one variable shared with the other. r = .60 gives r² = .36, or 36%."],
+  ["Correlation is not causation","A correlation shows variables move together, not that one causes the other. A third variable may drive both."]
+ ],
+ why:"Correlation answers relationship questions such as ‘Is study time related to exam performance?’ It is used when you measure two numerical variables on the same people without manipulating either. Its result also tells you how much one variable could help predict the other.",
+ study:"A researcher reports: ‘Weekly study hours were strongly and positively correlated with exam scores, r(48) = .62, p < .001.’ Nobody was assigned to study more, so this shows a relationship, not proof that studying causes higher scores. Motivation could drive both.",
+ formula:["r = Σ(x − x̄)(y − ȳ) ÷ √[Σ(x − x̄)² × Σ(y − ȳ)²]","Significance: t = r√(n − 2) ÷ √(1 − r²), with df = n − 2"],
+ dataset:"study",
+ sample:r=>{const rows=xySample(r,r.pick([6,7]));return{rows,xs:rows.map(x=>x.study_hours),ys:rows.map(x=>x.exam_score),ctx:"Study hours and exam scores for a random sample of students."};},
+ show:xyShow,
+ steps:d=>{const c=corrParts(d.xs,d.ys);return[
+  ["Draw the scatterplot","Looking first shows whether the pattern is a straight line and whether any point is unusual. r only measures straight-line relationships.",scatter(d.xs,d.ys,{xTitle:"Study hours per week",yTitle:"Exam score (%)"})],
+  ["Find both means","Correlation compares each person with the average on each variable.",`x̄ = ${sum(d.xs)} ÷ ${c.n} = <mark>${fmt(c.mx)}</mark>, ȳ = ${sum(d.ys)} ÷ ${c.n} = <mark>${fmt(c.my)}</mark>`],
+  ["Work out deviations and products","When both deviations share a sign (both above or both below average) the product is positive, which pushes r up.",corrTable(c,"x","y")],
+  ["Calculate r","Dividing by the spread of each variable keeps r between −1 and +1 whatever the units.",`r = ${fmt(c.sxy)} ÷ √(${fmt(c.sxx)} × ${fmt(c.syy)}) = ${fmt(c.sxy)} ÷ ${fmt(Math.sqrt(c.sxx*c.syy))} = <mark>${fx(c.r,3)}</mark>`],
+  ["Calculate r²","r² tells readers how much of the variation the two variables share.",`r² = ${fx(c.r,3)}² = <mark>${fx(c.r*c.r,3)}</mark>, so about ${fmt(c.r*c.r*100,0)}% of the variation in exam scores is shared with study hours.`],
+  ["Describe direction and strength","Researchers use rough benchmarks: below .3 weak, .3 to .5 moderate, .5 or above strong.",`r is ${c.r>=0?"positive":"negative"} and ${strengthLabel(c.r).split(" (")[0].toLowerCase()}: <mark>${strengthLabel(c.r)}</mark>.`],
+  ["Test whether r is significant","With a small sample, even a big r can happen by chance.",`t = ${fx(c.r,3)} × √${c.n-2} ÷ √(1 − ${fx(c.r*c.r,3)}) = ${fmt(c.t)}, df = ${c.df}, ${fmtP(c.p)}.<br>${c.p<.05?"p is below .05, so the correlation is <mark>statistically significant</mark>.":"p is above .05, so with this small sample the correlation is <mark>not statistically significant</mark>."}`]];},
+ report:d=>{const c=corrParts(d.xs,d.ys);return `There was a ${strengthLabel(c.r).split(" (")[0].toLowerCase()} ${c.r>=0?"positive":"negative"} correlation between study hours and exam scores, r(${c.df}) = ${noLead(fx(c.r,2))}, ${fmtP(c.p)}.`;},
+ fields:[
+  {k:"mx",label:"Mean of x (x̄)",t:d=>mean(d.xs),hint:()=>"Average study hours."},
+  {k:"my",label:"Mean of y (ȳ)",t:d=>mean(d.ys),hint:()=>"Average exam score."},
+  {k:"sxy",label:"Σ(x − x̄)(y − ȳ)",t:d=>corrParts(d.xs,d.ys).sxy,tol:{abs:.5,rel:.01},hint:()=>"Multiply each pair of deviations and add the products."},
+  {k:"sxx",label:"Σ(x − x̄)²",t:d=>corrParts(d.xs,d.ys).sxx,tol:{abs:.5,rel:.01},hint:()=>"Square each x deviation and add."},
+  {k:"syy",label:"Σ(y − ȳ)²",t:d=>corrParts(d.xs,d.ys).syy,tol:{abs:.5,rel:.01},hint:()=>"Square each y deviation and add."},
+  {k:"r",label:"Pearson’s r",t:d=>corrParts(d.xs,d.ys).r,tol:{abs:.01},hint:()=>"Σ(x − x̄)(y − ȳ) ÷ √[Σ(x − x̄)² × Σ(y − ȳ)²]."},
+  {k:"r2",label:"r²",t:d=>corrParts(d.xs,d.ys).r**2,tol:{abs:.01},hint:()=>"Square r."},
+  {k:"str",label:"Strength",type:"choice",options:STRENGTH,t:d=>strengthLabel(corrParts(d.xs,d.ys).r),hint:()=>"Ignore the sign and compare r with .3 and .5."}
+ ]
+});
+LESSONS.push({
+ id:"regression",stage:"rel",title:"Simple linear regression",blurb:"Draw the line of best fit and use it to predict.",
+ intro:"Regression turns a relationship into an equation: predicted outcome = intercept + slope × predictor.",
+ terms:[
+  ["Simple linear regression","A method that fits the straight line that best predicts one variable (y) from another (x)."],
+  ["Predictor (x)","The variable used to make the prediction, e.g. study hours."],
+  ["Outcome (y)","The variable being predicted, e.g. exam score."],
+  ["Slope (b)","How much y is predicted to change for every one-unit increase in x."],
+  ["Intercept (a)","The predicted y when x is 0. Sometimes this has no real-world meaning."],
+  ["Predicted value (ŷ)","The value of y the line predicts for a given x."],
+  ["Residual","The actual y minus the predicted ŷ: how far the line missed for that person."]
+ ],
+ why:"Regression goes a step beyond correlation. It gives an equation for predicting the outcome, and the slope says how much the outcome changes per unit of the predictor. That is often more useful for decision-makers than r alone.",
+ study:"‘Each additional hour of weekly study was associated with an exam score about 2.4 points higher (b = 2.41, R² = .38).’ A department could use this to say what a realistic study target might mean for results, while remembering it is still not proof of cause.",
+ formula:["b = Σ(x − x̄)(y − ȳ) ÷ Σ(x − x̄)²","a = ȳ − b × x̄","ŷ = a + b × x","Residual = y − ŷ"],
+ dataset:"study",
+ sample:r=>{const rows=xySample(r,r.pick([7,8])),xs=rows.map(x=>x.study_hours);return{rows,xs,ys:rows.map(x=>x.exam_score),x0:r.int(Math.min(...xs),Math.max(...xs)),ctx:"Study hours and exam scores for a random sample of students."};},
+ show:d=>xyShow(d)+`<p class="meta">You will predict the exam score for a student who studies <strong>${d.x0} hours</strong>, and find the residual for student ${d.rows[0].id}.</p>`,
+ steps:d=>{const c=corrParts(d.xs,d.ys),yhat=c.a+c.b*d.x0,res=d.ys[0]-(c.a+c.b*d.xs[0]);return[
+  ["Find both means","The regression line always passes through the point (x̄, ȳ).",`x̄ = <mark>${fmt(c.mx)}</mark>, ȳ = <mark>${fmt(c.my)}</mark>`],
+  ["Work out the sums you need","The slope compares how x and y vary together with how x varies on its own.",corrTable(c,"x","y")],
+  ["Calculate the slope (b)","The slope is the headline result: the change in y for each extra unit of x.",`b = ${fmt(c.sxy)} ÷ ${fmt(c.sxx)} = <mark>${fmt(c.b)}</mark>. Each extra hour of study goes with about ${fmt(c.b)} more exam points.`],
+  ["Calculate the intercept (a)","The intercept fixes where the line sits on the graph.",`a = ${fmt(c.my)} − ${fmt(c.b)} × ${fmt(c.mx)} = <mark>${fmt(c.a)}</mark>`],
+  ["Write the equation and draw the line","The equation is what you use for predictions.",`ŷ = ${fmt(c.a)} + ${fmt(c.b)}x${scatter(d.xs,d.ys,{line:[c.a,c.b],xTitle:"Study hours per week",yTitle:"Exam score (%)"})}`],
+  ["Predict an exam score","Prediction is the practical use of regression. Only predict within the range of your data.",`For x = ${d.x0}: ŷ = ${fmt(c.a)} + ${fmt(c.b)} × ${d.x0} = <mark>${fmt(yhat)}</mark>`],
+  ["Find a residual","Residuals show how well the line fits. Big residuals mean poor predictions for those people.",`Student ${d.rows[0].id}: actual ${d.ys[0]}, predicted ${fmt(c.a+c.b*d.xs[0])}, residual = ${d.ys[0]} − ${fmt(c.a+c.b*d.xs[0])} = <mark>${fmt(res)}</mark>`],
+  ["Check how much the line explains","R² (which equals r² in simple regression) tells you how useful the predictions are.",`R² = ${fx(c.r*c.r,3)}, so study hours explain about ${fmt(c.r*c.r*100,0)}% of the variation in exam scores here.`]];},
+ report:d=>{const c=corrParts(d.xs,d.ys);return `Study hours predicted exam scores, b = ${fmt(c.b)}, R² = ${noLead(fx(c.r*c.r,2))}: each additional weekly study hour was associated with a ${fmt(Math.abs(c.b))}-point ${c.b>=0?"higher":"lower"} exam score. Regression equation: ŷ = ${fmt(c.a)} + ${fmt(c.b)}x.`;},
+ fields:[
+  {k:"b",label:"Slope (b)",t:d=>corrParts(d.xs,d.ys).b,tol:{abs:.02},hint:()=>"Σ(x − x̄)(y − ȳ) ÷ Σ(x − x̄)²."},
+  {k:"a",label:"Intercept (a)",t:d=>corrParts(d.xs,d.ys).a,tol:{abs:.2},hint:()=>"ȳ − b × x̄."},
+  {k:"yhat",label:"Predicted score for the given hours",t:d=>{const c=corrParts(d.xs,d.ys);return c.a+c.b*d.x0;},tol:{abs:.3},hint:d=>`a + b × ${d.x0}.`},
+  {k:"res",label:"Residual for the first student",t:d=>{const c=corrParts(d.xs,d.ys);return d.ys[0]-(c.a+c.b*d.xs[0]);},tol:{abs:.3},hint:()=>"Actual score minus predicted score (actual − predicted)."}
+ ]
+});
+
+/* ---------- STAGE 4: TESTING IDEAS ---------- */
+LESSONS.push({
+ id:"hypothesis-testing",stage:"test",title:"How hypothesis testing works",blurb:"p-values, significance, and the two kinds of error.",
+ intro:"Every inferential test follows the same logic. Learn it once here and the tests that follow will make sense.",
+ terms:[
+  ["Hypothesis test","A procedure for deciding whether sample data give enough evidence to reject H₀."],
+  ["Significance level (α)","The cut-off you set in advance for rejecting H₀, usually .05 (5%)."],
+  ["p-value","If H₀ were true, the probability of getting a result at least as extreme as yours. Small p = surprising if H₀ were true."],
+  ["Statistically significant","p < α. The result is unlikely to be due to chance alone. It does not mean the effect is large or important."],
+  ["Reject / fail to reject H₀","If p < α you reject H₀. If p ≥ α you fail to reject it. You never ‘prove’ H₀."],
+  ["Test statistic","The number a test calculates (t, F, χ²) to measure how far your data are from what H₀ predicts."],
+  ["Critical value","The value the test statistic must exceed to be significant at your α level."],
+  ["Degrees of freedom (df)","A number based on sample size that tells you which version of the t, F or χ² distribution to use."],
+  ["Type I error","Rejecting H₀ when it is actually true: a false alarm. Its chance equals α."],
+  ["Type II error","Failing to reject H₀ when there really is an effect: a missed finding."],
+  ["Statistical power","The chance of detecting a real effect. Bigger samples and bigger effects give more power."]
+ ],
+ why:"Any sample result could be due to chance. A hypothesis test asks: if H₀ were true, how likely is a result at least this big? If that probability (p) is below .05, researchers reject H₀. This is how quantitative studies decide whether a finding is likely to be real rather than a fluke.",
+ study:"Bilingual Reading Programme Study: H₀ says the programme makes no difference. The t-test gives p = .008. If the programme truly did nothing, a gap this large would turn up less than 1% of the time, so the researchers reject H₀. They still report the effect size, because ‘significant’ does not mean ‘large’.",
+ extra:()=>`<h3>The four possible outcomes</h3>${table(["Your decision","H₀ is really true","H₀ is really false"],[["Reject H₀","<span style='white-space:normal'>Type I error (false alarm)</span>","<span style='white-space:normal'>Correct: real effect found</span>"],["Fail to reject H₀","<span style='white-space:normal'>Correct: no effect claimed</span>","<span style='white-space:normal'>Type II error (missed effect)</span>"]])}
+  <h3>The steps in every test</h3><ol><li>State H₀ and H₁.</li><li>Choose α (usually .05).</li><li>Calculate the test statistic from your data.</li><li>Find the p-value (or compare with the critical value).</li><li>Decide: reject or fail to reject H₀.</li><li>Report the result with an effect size, in plain words.</li></ol>`,
+ dataset:"reading",
+ activity:{type:"custom",render:el=>{renderSort(el,"hypothesis-testing",[
+   {q:"p = .03 and α = .05. What do you do?",options:["Reject H₀","Fail to reject H₀"],a:0,why:".03 is below .05."},
+   {q:"p = .27 and α = .05. What do you do?",options:["Reject H₀","Fail to reject H₀"],a:1,why:".27 is above .05, so the evidence is not strong enough."},
+   {q:"‘Fail to reject H₀’ means…",options:["We didn’t find enough evidence of an effect","We proved there is no effect"],a:0,why:"Absence of evidence is not evidence of absence. The effect may exist but the study could not detect it."},
+   {q:"Concluding a reading programme works when it actually doesn’t is a…",options:["Type I error","Type II error"],a:0,why:"A false alarm: rejecting a true H₀."},
+   {q:"A real improvement is missed because only 8 students were tested. This is a…",options:["Type I error","Type II error"],a:1,why:"A missed effect, usually caused by low power."},
+   {q:"Which change makes a Type II error less likely?",options:["Using a larger sample","Using a smaller sample","Lowering α to .01"],a:0,why:"Larger samples increase power. Lowering α actually makes misses more likely."},
+   {q:"p = .04 means…",options:["If H₀ were true, a result this extreme would happen about 4% of the time","There is a 4% chance H₀ is true","The effect is 4% in size"],a:0,why:"p is calculated assuming H₀ is true. It is not the probability that H₀ is true."}
+  ],"Make the call");renderPowerDemo(el);}}
+});
+LESSONS.push({
+ id:"confidence-intervals",stage:"test",title:"Standard error and confidence intervals",blurb:"How precise is your estimate of the population mean?",
+ intro:"A sample mean is only an estimate. A confidence interval gives a range of plausible values for the population mean.",
+ terms:[
+  ["Point estimate","A single best guess for a population value, such as the sample mean."],
+  ["Standard error (SE)","How much the sample mean would vary from sample to sample: s ÷ √n. Bigger samples give smaller SEs."],
+  ["Confidence interval (CI)","A range around the estimate that is likely to contain the population value."],
+  ["Confidence level","How often the method captures the true value over many studies. 95% is standard."],
+  ["Margin of error","The ± part of the interval: critical t × SE."],
+  ["Critical t value (t*)","The number from the t table that sets the width of the interval, based on df = n − 1."]
+ ],
+ why:"A CI shows both your best estimate and how precise it is. A narrow interval means a precise estimate; a wide one means more uncertainty, usually because the sample is small. APA style recommends reporting CIs for key results.",
+ study:"‘After the programme, the mean reading score was 61.3, 95% CI [56.0, 66.6].’ Readers can see the likely range for the population. If a benchmark of 55 sits below the whole interval, that suggests these students score above the benchmark.",
+ formula:["SE = s ÷ √n","Margin of error = t* × SE (df = n − 1)","95% CI = x̄ ± margin of error"],
+ dataset:"reading",
+ sample:r=>({vals:pickRows(r,"reading",r.pick([8,10])).map(x=>x.post_score),ctx:"Post-programme reading scores for a random sample of students."}),
+ show:d=>tiles(d.vals),
+ steps:d=>{const a=d.vals,n=a.length,m=mean(a),s=sd(a),se=s/Math.sqrt(n),tc=tCrit(n-1),moe=tc*se;return[
+  ["Find the mean","The sample mean is your point estimate of the population mean.",`${sum(a)} ÷ ${n} = <mark>${fmt(m)}</mark>`],
+  ["Find the standard deviation","You need the spread to judge how much the mean could wobble.",`s = <mark>${fmt(s)}</mark> (sample SD, dividing by n − 1)`],
+  ["Calculate the standard error","SE shrinks as n grows: more data, more precise estimate.",`SE = ${fmt(s)} ÷ √${n} = ${fmt(s)} ÷ ${fmt(Math.sqrt(n),3)} = <mark>${fmt(se)}</mark>`],
+  ["Look up the critical t","The t value sets how wide the net must be to catch the true mean 95% of the time.",`df = ${n} − 1 = ${n-1}. From the t table (95%, two-tailed): t* = <mark>${fx(tc,3)}</mark>`],
+  ["Calculate the margin of error","This is the ± part of the interval.",`${fx(tc,3)} × ${fmt(se)} = <mark>${fmt(moe)}</mark>`],
+  ["Build the interval","The interval shows the range of plausible population means.",`${fmt(m)} − ${fmt(moe)} = <mark>${fmt(m-moe)}</mark> and ${fmt(m)} + ${fmt(moe)} = <mark>${fmt(m+moe)}</mark>`],
+  ["Interpret it","Getting the interpretation right matters in a thesis.",`If we repeated this study many times, about 95% of intervals built this way would contain the true population mean. Our interval runs from ${fmt(m-moe)} to ${fmt(m+moe)}.`]];},
+ report:d=>{const a=d.vals,n=a.length,m=mean(a),moe=tCrit(n-1)*sd(a)/Math.sqrt(n);return `The mean post-programme reading score was ${fmt(m)} (SD = ${fmt(sd(a))}), 95% CI [${fmt(m-moe)}, ${fmt(m+moe)}].`;},
+ fields:[
+  {k:"m",label:"Mean",t:d=>mean(d.vals)},
+  {k:"s",label:"Standard deviation",t:d=>sd(d.vals),hint:(d,u)=>close(u,sd(d.vals,false))?"Use n − 1, not n.":"Sample SD: divide by n − 1 before the square root."},
+  {k:"se",label:"Standard error",t:d=>sd(d.vals)/Math.sqrt(d.vals.length),tol:{abs:.02},hint:()=>"SD ÷ √n."},
+  {k:"tc",label:"Critical t (t*)",t:d=>tCrit(d.vals.length-1),tol:{abs:.01},hint:d=>`Look up df = ${d.vals.length-1} in the t table (95%, two-tailed). Use “Show t table” below.`},
+  {k:"moe",label:"Margin of error",t:d=>tCrit(d.vals.length-1)*sd(d.vals)/Math.sqrt(d.vals.length),tol:{abs:.1},hint:()=>"t* × SE."},
+  {k:"lo",label:"Lower limit",t:d=>mean(d.vals)-tCrit(d.vals.length-1)*sd(d.vals)/Math.sqrt(d.vals.length),tol:{abs:.1},hint:()=>"Mean − margin."},
+  {k:"hi",label:"Upper limit",t:d=>mean(d.vals)+tCrit(d.vals.length-1)*sd(d.vals)/Math.sqrt(d.vals.length),tol:{abs:.1},hint:()=>"Mean + margin."}
+ ],
+ tools:["ttable"]
+});
+const oneT = d => {const a=d.vals,n=a.length,m=mean(a),s=sd(a),se=s/Math.sqrt(n),t=(m-d.mu)/se;return{n,m,s,se,t,df:n-1,p:pT(Math.abs(t),n-1),tc:tCrit(n-1)};};
+LESSONS.push({
+ id:"one-sample-t",stage:"test",title:"One-sample t-test",blurb:"Does one group differ from a known value?",
+ intro:"Use a one-sample t-test when you have one group and want to know whether its mean differs from a set value, such as a national benchmark or a scale midpoint.",
+ terms:[
+  ["One-sample t-test","Tests whether a sample mean differs significantly from a known or hypothesised value."],
+  ["Test value (μ₀)","The value you compare against, e.g. a regional benchmark of 32."],
+  ["t statistic","The gap between the sample mean and the test value, measured in standard errors."],
+  ["Assumptions","Data are numerical (interval or ratio), cases are independent, and scores are roughly normal (less important with larger samples)."]
+ ],
+ why:"Researchers often need to know whether their group is typical. Are our teachers’ wellbeing scores below the regional norm? Is our class above the regional target? The one-sample t-test answers that while allowing for sampling variation.",
+ study:"‘Teachers’ wellbeing (M = 30.1, SD = 6.2) was significantly below the regional benchmark of 32, t(44) = −2.05, p = .046.’ The result could support a request for wellbeing support in these schools.",
+ formula:["t = (x̄ − μ₀) ÷ (s ÷ √n)","df = n − 1"],
+ dataset:"wellbeing",
+ sample:r=>({vals:pickRows(r,"wellbeing",8).map(x=>x.wellbeing_score),mu:32,ctx:"Wellbeing scores (10 to 50) for a random sample of 8 teachers. The regional benchmark from an earlier Caribbean survey is 32."}),
+ show:d=>tiles(d.vals)+`<p class="meta">Test value μ₀ = ${d.mu}</p>`,
+ steps:d=>{const o=oneT(d);return[
+  ["State the hypotheses","This tells you exactly what the test is checking.",`H₀: the population mean wellbeing is ${d.mu}. H₁: the population mean is not ${d.mu} (two-tailed).`],
+  ["Find the mean and SD","These describe your sample before you test anything.",`x̄ = ${sum(d.vals)} ÷ ${o.n} = <mark>${fmt(o.m)}</mark>, s = <mark>${fmt(o.s)}</mark>`],
+  ["Calculate the standard error","SE is how much a sample mean would naturally vary.",`SE = ${fmt(o.s)} ÷ √${o.n} = <mark>${fmt(o.se)}</mark>`],
+  ["Calculate t","t asks how many standard errors your mean is from the benchmark.",`t = (${fmt(o.m)} − ${d.mu}) ÷ ${fmt(o.se)} = <mark>${fmt(o.t)}</mark>`],
+  ["Find df and the critical value","The critical value tells you how big t must be to count as significant.",`df = ${o.n} − 1 = <mark>${o.df}</mark>. Critical t (two-tailed, .05) = ${fx(o.tc,3)}`],
+  ["Decide","Compare |t| with the critical value, or p with .05.",`|t| = ${fmt(Math.abs(o.t))} is ${Math.abs(o.t)>o.tc?"larger":"smaller"} than ${fx(o.tc,3)}, and ${fmtP(o.p)}. <mark>${decideTruth(o.p)}</mark>.`],
+  ["Say what it means","Always translate the statistics into a plain conclusion.",o.p<.05?`These teachers’ wellbeing is significantly ${o.m<d.mu?"below":"above"} the benchmark.`:"We don’t have enough evidence that these teachers differ from the benchmark. A larger sample might give a clearer answer."]];},
+ report:d=>{const o=oneT(d);return `Teachers’ wellbeing (M = ${fmt(o.m)}, SD = ${fmt(o.s)}) ${o.p<.05?`was significantly ${o.m<d.mu?"lower":"higher"} than`:"did not differ significantly from"} the benchmark of ${d.mu}, t(${o.df}) = ${fmt(o.t)}, ${fmtP(o.p)}.`;},
+ fields:[
+  {k:"m",label:"Mean",t:d=>mean(d.vals)},
+  {k:"s",label:"Standard deviation",t:d=>sd(d.vals),hint:()=>"Sample SD (n − 1)."},
+  {k:"se",label:"Standard error",t:d=>oneT(d).se,tol:{abs:.02},hint:()=>"SD ÷ √n."},
+  {k:"t",label:"t",t:d=>oneT(d).t,tol:{abs:.05,rel:.02},hint:d=>`(mean − ${d.mu}) ÷ SE. Keep the minus sign if the mean is below ${d.mu}.`},
+  {k:"df",label:"Degrees of freedom",t:d=>d.vals.length-1,tol:{abs:0},hint:()=>"n − 1."},
+  {k:"dec",label:"Decision",type:"choice",options:DECIDE,t:d=>decideTruth(oneT(d).p),hint:()=>"Compare |t| with the critical value in the t table."}
+ ],
+ tools:["ttable"]
+});
+const indT = d => {const A=d.A,B=d.B,n1=A.length,n2=B.length,m1=mean(A),m2=mean(B),s1=sd(A),s2=sd(B),df=n1+n2-2,sp2=((n1-1)*s1*s1+(n2-1)*s2*s2)/df,se=Math.sqrt(sp2*(1/n1+1/n2)),t=(m1-m2)/se;return{n1,n2,m1,m2,s1,s2,df,sp2,se,t,p:pT(Math.abs(t),df),tc:tCrit(df),d:(m1-m2)/Math.sqrt(sp2)};};
+const groupsSample = (r,n) => ({A:pickRows(r,"reading",n,x=>x.group==="Intervention").map(x=>x.post_score),B:pickRows(r,"reading",n,x=>x.group==="Control").map(x=>x.post_score)});
+const groupsShow = d => `<div class="groups"><div><p class="meta"><strong>Group 1: Intervention</strong></p>${tiles(d.A)}</div><div><p class="meta"><strong>Group 2: Control</strong></p>${tiles(d.B)}</div></div>`;
+LESSONS.push({
+ id:"independent-t",stage:"test",title:"Independent samples t-test",blurb:"Compare the means of two separate groups.",
+ intro:"Use an independent samples t-test to compare the means of two different groups of people on a numerical outcome.",
+ terms:[
+  ["Independent samples t-test","Tests whether the means of two separate groups differ significantly."],
+  ["Independent groups","Each person is in only one group, e.g. intervention or control."],
+  ["Pooled variance (s²ₚ)","A weighted average of the two groups’ variances, used when the groups have similar spread."],
+  ["Assumptions","A numerical DV, independent groups, roughly normal scores in each group, and similar variances (checked with Levene’s test in software)."],
+  ["Welch’s t-test","A version that does not assume equal variances. Many software packages report it by default."]
+ ],
+ why:"Comparing two groups is one of the most common designs in education research: programme vs no programme, urban vs rural, girls vs boys. The t-test tells you whether the difference in means is bigger than you’d expect from chance.",
+ study:"‘Intervention students scored higher after the programme (M = 63.4, SD = 9.1) than control students (M = 55.2, SD = 10.3), t(58) = 3.27, p = .002, d = 0.84.’ Because students were in separate groups, an independent test is the right choice.",
+ formula:["s²ₚ = [(n₁ − 1)s₁² + (n₂ − 1)s₂²] ÷ (n₁ + n₂ − 2)","SE = √[s²ₚ × (1/n₁ + 1/n₂)]","t = (x̄₁ − x̄₂) ÷ SE, df = n₁ + n₂ − 2"],
+ dataset:"reading",
+ sample:r=>({...groupsSample(r,6),ctx:"Post-programme reading scores for random samples from each group."}),
+ show:groupsShow,
+ steps:d=>{const o=indT(d);return[
+  ["State the hypotheses","Defines what counts as evidence.","H₀: the two population means are equal. H₁: they differ (two-tailed)."],
+  ["Find each group’s mean","The gap between these is what you are testing.",`x̄₁ = ${sum(d.A)} ÷ ${o.n1} = <mark>${fmt(o.m1)}</mark>, x̄₂ = ${sum(d.B)} ÷ ${o.n2} = <mark>${fmt(o.m2)}</mark>, gap = ${fmt(o.m1-o.m2)}`],
+  ["Find each group’s SD","More spread within groups makes a gap between groups less convincing.",`s₁ = <mark>${fmt(o.s1)}</mark> (s₁² = ${fmt(o.s1**2)}), s₂ = <mark>${fmt(o.s2)}</mark> (s₂² = ${fmt(o.s2**2)})`],
+  ["Pool the variances","Combining both groups gives a better estimate of the spread.",`s²ₚ = [${o.n1-1} × ${fmt(o.s1**2)} + ${o.n2-1} × ${fmt(o.s2**2)}] ÷ ${o.df} = <mark>${fmt(o.sp2)}</mark>`],
+  ["Find the standard error","SE is how much the gap between means would vary from sample to sample.",`SE = √[${fmt(o.sp2)} × (1/${o.n1} + 1/${o.n2})] = <mark>${fmt(o.se)}</mark>`],
+  ["Calculate t","t compares the gap with the gap you’d expect by chance.",`t = ${fmt(o.m1-o.m2)} ÷ ${fmt(o.se)} = <mark>${fmt(o.t)}</mark>`],
+  ["Find df and decide","df tells you which row of the t table to use.",`df = ${o.n1} + ${o.n2} − 2 = <mark>${o.df}</mark>, critical t = ${fx(o.tc,3)}, ${fmtP(o.p)}. <mark>${decideTruth(o.p)}</mark>.`],
+  ["Say what it means","Plain words for readers, and a reminder to check the effect size.",o.p<.05?`The ${o.m1>o.m2?"Intervention":"Control"} group scored significantly higher. Next, report how big the difference is (Cohen’s d = ${fmt(o.d)}).`:"The groups did not differ significantly in this sample. That does not prove the programme has no effect: the samples are small."]];},
+ report:d=>{const o=indT(d);return `Intervention students (M = ${fmt(o.m1)}, SD = ${fmt(o.s1)}) ${o.p<.05?`scored significantly ${o.m1>o.m2?"higher":"lower"} than`:"did not differ significantly from"} control students (M = ${fmt(o.m2)}, SD = ${fmt(o.s2)}), t(${o.df}) = ${fmt(o.t)}, ${fmtP(o.p)}, d = ${fmt(o.d)}.`;},
+ fields:[
+  {k:"m1",label:"Mean of group 1 (x̄₁)",t:d=>mean(d.A)},
+  {k:"m2",label:"Mean of group 2 (x̄₂)",t:d=>mean(d.B)},
+  {k:"s1",label:"SD of group 1 (s₁)",t:d=>sd(d.A),hint:()=>"Sample SD (n − 1)."},
+  {k:"s2",label:"SD of group 2 (s₂)",t:d=>sd(d.B),hint:()=>"Sample SD (n − 1)."},
+  {k:"sp2",label:"Pooled variance (s²ₚ)",t:d=>indT(d).sp2,tol:{abs:.2,rel:.01},hint:()=>"[(n₁ − 1)s₁² + (n₂ − 1)s₂²] ÷ (n₁ + n₂ − 2)."},
+  {k:"t",label:"t",t:d=>indT(d).t,tol:{abs:.05,rel:.02},hint:()=>"Gap between means ÷ SE."},
+  {k:"df",label:"Degrees of freedom",t:d=>d.A.length+d.B.length-2,tol:{abs:0},hint:()=>"n₁ + n₂ − 2."},
+  {k:"dec",label:"Decision",type:"choice",options:DECIDE,t:d=>decideTruth(indT(d).p),hint:()=>"Compare |t| with the critical value."}
+ ],
+ tools:["ttable"]
+});
+const pairT = d => {const D=d.post.map((x,i)=>x-d.pre[i]),n=D.length,m=mean(D),s=sd(D),se=s/Math.sqrt(n),t=m/se;return{D,n,m,s,se,t,df:n-1,p:pT(Math.abs(t),n-1),tc:tCrit(n-1)};};
+LESSONS.push({
+ id:"paired-t",stage:"test",title:"Paired samples t-test",blurb:"Compare the same people before and after.",
+ intro:"Use a paired t-test when the same people are measured twice, or when people are matched in pairs.",
+ terms:[
+  ["Paired (repeated measures) t-test","Tests whether the mean difference between two related measurements is zero."],
+  ["Difference score (d)","For each person: second score minus first score."],
+  ["Mean difference (d̄)","The average of the difference scores: the typical change."],
+  ["Pre-test / post-test design","Measuring the same people before and after an intervention."],
+  ["Practice effect","People often score higher the second time simply because they have seen the test before."]
+ ],
+ why:"Because each person is compared with themselves, differences between people (some just read better than others) cancel out. That makes the paired test much more sensitive than treating the two sets of scores as separate groups.",
+ study:"‘Students’ reading scores rose from pre-test (M = 51.8) to post-test (M = 57.4), t(59) = 6.12, p < .001.’ A careful researcher adds that without a control group, some of that gain could be normal growth or practice effects.",
+ formula:["d = post − pre (for each person)","t = d̄ ÷ (s_d ÷ √n)","df = n − 1"],
+ dataset:"reading",
+ sample:r=>{const rows=pickRows(r,"reading",7);return{ids:rows.map(x=>x.name),pre:rows.map(x=>x.pre_score),post:rows.map(x=>x.post_score),ctx:"Reading scores before and after the 10 weeks for a random sample of 7 students."};},
+ show:d=>table(["Student","Before","After"],d.ids.map((id,i)=>[id,d.pre[i],d.post[i]])),
+ steps:d=>{const o=pairT(d);return[
+  ["Work out each difference","The test is really about these change scores, not the raw scores.",table(["Student","Before","After","d = After − Before"],d.ids.map((id,i)=>[id,d.pre[i],d.post[i],fmt(o.D[i])]),["","","",`Σd = ${fmt(sum(o.D))}`])],
+  ["Find the mean difference","This is the average change per student.",`d̄ = ${fmt(sum(o.D))} ÷ ${o.n} = <mark>${fmt(o.m)}</mark>`],
+  ["Find the SD of the differences","If everyone changed by a similar amount, the SD is small and the result more convincing.",`s_d = <mark>${fmt(o.s)}</mark>`],
+  ["Calculate the standard error","How much the mean change would vary from sample to sample.",`SE = ${fmt(o.s)} ÷ √${o.n} = <mark>${fmt(o.se)}</mark>`],
+  ["Calculate t","How many standard errors the mean change is from zero.",`t = ${fmt(o.m)} ÷ ${fmt(o.se)} = <mark>${fmt(o.t)}</mark>`],
+  ["Find df and decide","Compare with the critical value for df = n − 1.",`df = <mark>${o.df}</mark>, critical t = ${fx(o.tc,3)}, ${fmtP(o.p)}. <mark>${decideTruth(o.p)}</mark>.`],
+  ["Say what it means","Interpret with the design’s limits in mind.",o.p<.05?`Scores ${o.m>0?"rose":"fell"} significantly, by about ${fmt(Math.abs(o.m))} points on average. Without a comparison group, we can’t be sure the programme caused the change.`:"The change was not statistically significant in this sample."]];},
+ report:d=>{const o=pairT(d);return `Reading scores ${o.p<.05?(o.m>0?"increased significantly":"decreased significantly"):"did not change significantly"} from before (M = ${fmt(mean(d.pre))}) to after (M = ${fmt(mean(d.post))}), t(${o.df}) = ${fmt(o.t)}, ${fmtP(o.p)}.`;},
+ fields:[
+  {k:"m",label:"Mean difference (d̄)",t:d=>pairT(d).m,hint:()=>"Subtract before from after for each student, then average."},
+  {k:"s",label:"SD of differences (s_d)",t:d=>pairT(d).s,hint:()=>"Sample SD of the difference scores."},
+  {k:"se",label:"Standard error",t:d=>pairT(d).se,tol:{abs:.02},hint:()=>"s_d ÷ √n."},
+  {k:"t",label:"t",t:d=>pairT(d).t,tol:{abs:.05,rel:.02},hint:()=>"d̄ ÷ SE."},
+  {k:"df",label:"Degrees of freedom",t:d=>d.pre.length-1,tol:{abs:0},hint:()=>"Number of pairs − 1."},
+  {k:"dec",label:"Decision",type:"choice",options:DECIDE,t:d=>decideTruth(pairT(d).p),hint:()=>"Compare |t| with the critical value."}
+ ],
+ tools:["ttable"]
+});
+const TYPES=["Primary","Secondary","Tertiary"];
+function anovaCalc(d){
+  const all=TYPES.flatMap(t=>d.g[t]),N=all.length,k=3,gm=mean(all);
+  const ms=TYPES.map(t=>mean(d.g[t]));
+  const ssb=sum(TYPES.map((t,i)=>d.g[t].length*(ms[i]-gm)**2)),ssw=sum(TYPES.map(t=>ss(d.g[t])));
+  const dfb=k-1,dfw=N-k,msb=ssb/dfb,msw=ssw/dfw,F=msb/msw;
+  return{all,N,gm,ms,ssb,ssw,dfb,dfw,msb,msw,F,p:pF(F,dfb,dfw),fc:fCrit(dfb,dfw),eta:ssb/(ssb+ssw)};
+}
+LESSONS.push({
+ id:"anova",stage:"test",title:"One-way ANOVA",blurb:"Compare the means of three or more groups.",
+ intro:"Analysis of variance (ANOVA) tests whether three or more group means differ, using a single test.",
+ terms:[
+  ["One-way ANOVA","Tests whether the means of three or more independent groups differ on one numerical outcome."],
+  ["Factor and levels","The grouping variable (factor), e.g. school type, and its categories (levels): primary, secondary, tertiary."],
+  ["Between-groups variation","How far the group means are from the overall (grand) mean."],
+  ["Within-groups variation","How much individuals vary inside their own group."],
+  ["Sum of squares (SS)","Total squared deviations, split into between (SSB) and within (SSW)."],
+  ["Mean square (MS)","SS divided by its degrees of freedom: an average amount of variation."],
+  ["F ratio","MS between ÷ MS within. Large F means the groups differ more than individuals within groups do."],
+  ["Post hoc test","A follow-up (e.g. Tukey) that shows which groups differ, used after a significant ANOVA."],
+  ["Eta squared (η²)","The proportion of total variation explained by group membership: an effect size."]
+ ],
+ why:"With three groups you would need three t-tests, and every extra test raises the chance of a false alarm (Type I error). ANOVA checks all the groups in one test by asking whether the variation between groups is large compared with the variation inside them.",
+ study:"‘Wellbeing differed by school type, F(2, 42) = 6.81, p = .003, η² = .24. Tukey post hoc tests showed secondary teachers scored lower than both primary and tertiary teachers.’",
+ formula:["SSB = Σ nⱼ(x̄ⱼ − x̄)² (for each group j)","SSW = Σ(x − x̄ⱼ)² (within each group, then added)","MSB = SSB ÷ (k − 1), MSW = SSW ÷ (N − k)","F = MSB ÷ MSW","η² = SSB ÷ (SSB + SSW)"],
+ dataset:"wellbeing",
+ sample:r=>{const g={};TYPES.forEach(t=>g[t]=pickRows(r,"wellbeing",4,x=>x.school_type===t).map(x=>x.wellbeing_score));return{g,ctx:"Wellbeing scores for 4 randomly chosen teachers from each school type."};},
+ show:d=>`<div class="groups">${TYPES.map(t=>`<div><p class="meta"><strong>${t}</strong></p>${tiles(d.g[t])}</div>`).join("")}</div>`,
+ steps:d=>{const o=anovaCalc(d);return[
+  ["State the hypotheses","ANOVA tests all groups at once.","H₀: all three population means are equal. H₁: at least one mean is different."],
+  ["Find each group mean and the grand mean","You compare each group mean with the overall mean.",table(["Group","n","Mean"],TYPES.map((t,i)=>[t,d.g[t].length,fmt(o.ms[i])]),["All",o.N,fmt(o.gm)])+`Grand mean = <mark>${fmt(o.gm)}</mark>`],
+  ["Calculate between-groups SS","This captures how different the groups are from each other.",TYPES.map((t,i)=>`${d.g[t].length} × (${fmt(o.ms[i])} − ${fmt(o.gm)})² = ${fmt(d.g[t].length*(o.ms[i]-o.gm)**2)}`).join("<br>")+`<br>SSB = <mark>${fmt(o.ssb)}</mark>`],
+  ["Calculate within-groups SS","This captures natural variation between individuals, the ‘noise’.",TYPES.map((t,i)=>`${t}: Σ(x − ${fmt(o.ms[i])})² = ${fmt(ss(d.g[t]))}`).join("<br>")+`<br>SSW = <mark>${fmt(o.ssw)}</mark>`],
+  ["Find degrees of freedom and mean squares","Dividing by df turns totals into averages that can be compared.",`df between = k − 1 = <mark>${o.dfb}</mark>, df within = N − k = <mark>${o.dfw}</mark><br>MSB = ${fmt(o.ssb)} ÷ ${o.dfb} = ${fmt(o.msb)}, MSW = ${fmt(o.ssw)} ÷ ${o.dfw} = ${fmt(o.msw)}`],
+  ["Calculate F","F compares signal (between groups) with noise (within groups).",`F = ${fmt(o.msb)} ÷ ${fmt(o.msw)} = <mark>${fmt(o.F)}</mark>`],
+  ["Decide","Compare F with the critical value, or p with .05.",`Critical F(${o.dfb}, ${o.dfw}) = ${fmt(o.fc)}, ${fmtP(o.p)}. <mark>${decideTruth(o.p)}</mark>.`],
+  ["Measure the effect and plan the next step","η² shows how much group membership explains. A significant F only says that some groups differ.",`η² = ${fmt(o.ssb)} ÷ ${fmt(o.ssb+o.ssw)} = ${noLead(fx(o.eta,2))}, so school type explains about ${fmt(o.eta*100,0)}% of the variation in wellbeing. ${o.p<.05?"Run a post hoc test to find which groups differ.":"No post hoc tests are needed."}`],
+  ["Summary table","This is how software and journals lay out ANOVA results.",table(["Source","SS","df","MS","F","p"],[["Between groups",fmt(o.ssb),o.dfb,fmt(o.msb),fmt(o.F),(o.p<.001?"< .001":noLead(o.p.toFixed(3)))],["Within groups",fmt(o.ssw),o.dfw,fmt(o.msw),"",""]],["Total",fmt(o.ssb+o.ssw),o.N-1,"","",""])]];},
+ report:d=>{const o=anovaCalc(d);return `Wellbeing ${o.p<.05?"differed significantly":"did not differ significantly"} by school type, F(${o.dfb}, ${o.dfw}) = ${fmt(o.F)}, ${fmtP(o.p)}, η² = ${noLead(fx(o.eta,2))}.`;},
+ fields:[
+  {k:"gm",label:"Grand mean",t:d=>anovaCalc(d).gm,hint:()=>"Average of all 12 scores."},
+  {k:"ssb",label:"SS between (SSB)",t:d=>anovaCalc(d).ssb,tol:{abs:.5,rel:.01},hint:()=>"For each group: n × (group mean − grand mean)², then add."},
+  {k:"ssw",label:"SS within (SSW)",t:d=>anovaCalc(d).ssw,tol:{abs:.5,rel:.01},hint:()=>"Within each group, square each score’s distance from its group mean, then add across groups."},
+  {k:"dfb",label:"df between",t:()=>2,tol:{abs:0},hint:()=>"Number of groups − 1."},
+  {k:"dfw",label:"df within",t:d=>anovaCalc(d).dfw,tol:{abs:0},hint:()=>"Total N − number of groups."},
+  {k:"F",label:"F",t:d=>anovaCalc(d).F,tol:{abs:.05,rel:.02},hint:()=>"(SSB ÷ df between) ÷ (SSW ÷ df within)."},
+  {k:"dec",label:"Decision",type:"choice",options:DECIDE,t:d=>decideTruth(anovaCalc(d).p),hint:()=>"Compare F with the critical F value."}
+ ]
+});
+const LOCS=["Urban","Peri-urban","Rural"],YN=["Yes","No"];
+function chiCalc(d){
+  const O=LOCS.map(l=>YN.map(v=>d.rows.filter(x=>x.location===l&&x.device_access===v).length));
+  const R=O.map(r=>sum(r)),C=[0,1].map(j=>sum(O.map(r=>r[j]))),N=sum(R);
+  const E=O.map((r,i)=>r.map((_,j)=>R[i]*C[j]/N)),parts=O.map((r,i)=>r.map((o,j)=>(o-E[i][j])**2/E[i][j]));
+  const chi=sum(parts.flat()),df=2;
+  return{O,R,C,N,E,parts,chi,df,p:pChi(chi,df),cc:chiCrit(df),V:Math.sqrt(chi/(N*1))};
+}
+LESSONS.push({
+ id:"chi-square",stage:"test",title:"Chi-square test of independence",blurb:"Are two categorical variables related?",
+ intro:"When both variables are categories, you can’t calculate means. The chi-square (χ²) test compares the counts you observed with the counts you would expect if the variables were unrelated.",
+ terms:[
+  ["Chi-square test of independence","Tests whether two categorical variables are related."],
+  ["Contingency table (cross-tabulation)","A table of counts for every combination of two categorical variables."],
+  ["Observed frequency (O)","The count actually found in each cell."],
+  ["Expected frequency (E)","The count you would expect in each cell if there were no relationship."],
+  ["χ² statistic","Adds up how far each observed count is from its expected count."],
+  ["Assumption","Expected counts should be at least 5 in (nearly) every cell."],
+  ["Cramér’s V","An effect size for chi-square, from 0 (no relationship) to 1."]
+ ],
+ why:"Lots of research data are categorical: yes/no answers, school type, location. Chi-square is the standard test for whether these categories are linked, for example whether device ownership depends on where students live.",
+ study:"‘Device ownership was related to school location, χ²(2, N = 200) = 11.6, p = .003, Cramér’s V = .24. Rural students were least likely to own a device.’ During COVID-19 school closures, gaps like this decided who could keep learning. A finding like this can justify a targeted device scheme.",
+ formula:["E = (row total × column total) ÷ N","χ² = Σ (O − E)² ÷ E","df = (rows − 1) × (columns − 1)","Cramér’s V = √[χ² ÷ (N × (smaller of rows or columns − 1))]"],
+ dataset:"access",
+ sample:r=>({rows:r.sample(getData("access"),r.int(100,160)),ctx:"Device ownership by school location for a random sample of secondary students."}),
+ show:d=>{const o=chiCalc(d);return table(["Location","Own device: Yes","Own device: No","Total"],LOCS.map((l,i)=>[l,o.O[i][0],o.O[i][1],o.R[i]]),["Total",o.C[0],o.C[1],o.N]);},
+ steps:d=>{const o=chiCalc(d);return[
+  ["State the hypotheses","Chi-square tests for a relationship, not a difference in means.","H₀: device ownership is not related to location. H₁: device ownership is related to location."],
+  ["Calculate expected counts","If location made no difference, each location would have the same share of device owners as the whole sample.",`Example: Urban, Yes = ${o.R[0]} × ${o.C[0]} ÷ ${o.N} = <mark>${fmt(o.E[0][0])}</mark>`+table(["Location","Expected Yes","Expected No"],LOCS.map((l,i)=>[l,fmt(o.E[i][0]),fmt(o.E[i][1])]))],
+  ["Check the assumption","Chi-square is unreliable if expected counts are very small.",`The smallest expected count is ${fmt(Math.min(...o.E.flat()))}, ${Math.min(...o.E.flat())>=5?"which is at least 5, so the test is appropriate.":"which is below 5, so treat the result with caution."}`],
+  ["Compare observed and expected","Each cell’s (O − E)² ÷ E shows how far reality is from ‘no relationship’.",table(["Location","Yes","No"],LOCS.map((l,i)=>[l,`(${o.O[i][0]} − ${fmt(o.E[i][0])})² ÷ ${fmt(o.E[i][0])} = ${fmt(o.parts[i][0],3)}`,`(${o.O[i][1]} − ${fmt(o.E[i][1])})² ÷ ${fmt(o.E[i][1])} = ${fmt(o.parts[i][1],3)}`]))],
+  ["Add them to get χ²","The bigger χ², the further the data are from ‘no relationship’.",`χ² = <mark>${fmt(o.chi)}</mark>`],
+  ["Find df and decide","df comes from the table size, not the sample size.",`df = (3 − 1) × (2 − 1) = <mark>${o.df}</mark>. Critical χ² = ${fx(o.cc,3)}, ${fmtP(o.p)}. <mark>${decideTruth(o.p)}</mark>.`],
+  ["Measure the strength","A significant χ² with a big sample can still be a weak relationship.",`Cramér’s V = √(${fmt(o.chi)} ÷ (${o.N} × 1)) = ${noLead(fx(o.V,2))}`],
+  ["Describe the pattern","Percentages make the relationship clear to readers.",LOCS.map((l,i)=>`${l}: ${fmt(o.O[i][0]/o.R[i]*100,1)}% own a device`).join("<br>")]];},
+ report:d=>{const o=chiCalc(d);return `Device ownership ${o.p<.05?"was significantly related to":"was not significantly related to"} school location, χ²(${o.df}, N = ${o.N}) = ${fmt(o.chi)}, ${fmtP(o.p)}, Cramér’s V = ${noLead(fx(o.V,2))}.`;},
+ fields:[
+  {k:"e",label:"Expected count: Urban, Yes",t:d=>chiCalc(d).E[0][0],tol:{abs:.05},hint:()=>"Urban row total × Yes column total ÷ N."},
+  {k:"chi",label:"χ²",t:d=>chiCalc(d).chi,tol:{abs:.05,rel:.02},hint:()=>"Work out (O − E)² ÷ E for all six cells and add them."},
+  {k:"df",label:"Degrees of freedom",t:()=>2,tol:{abs:0},hint:()=>"(rows − 1) × (columns − 1)."},
+  {k:"dec",label:"Decision",type:"choice",options:DECIDE,t:d=>decideTruth(chiCalc(d).p),hint:()=>"Compare χ² with the critical value for your df."}
+ ]
+});
+
+/* ---------- STAGE 5: REPORTING ---------- */
+const dLabel = d => {const a=Math.abs(d);return a<.2?"Negligible (below 0.2)":a<.5?"Small (0.2 to 0.5)":a<.8?"Medium (0.5 to 0.8)":"Large (0.8 or more)";};
+LESSONS.push({
+ id:"effect-size",stage:"rep",title:"Effect size",blurb:"How big is the difference, not just whether it exists.",
+ intro:"A p-value tells you whether an effect is likely to be real. An effect size tells you how big it is.",
+ terms:[
+  ["Effect size","A standardised measure of how large a difference or relationship is, independent of sample size."],
+  ["Cohen’s d","The difference between two means divided by the pooled SD. d = 0.5 means the groups are half an SD apart."],
+  ["Pooled standard deviation","The combined SD of both groups, √s²ₚ."],
+  ["Benchmarks","Cohen’s rough guide: d of 0.2 small, 0.5 medium, 0.8 large. For r: .1, .3, .5. For η²: .01, .06, .14."],
+  ["Practical significance","Whether an effect is big enough to matter in real classrooms, schools or policies."]
+ ],
+ why:"With a large sample, a tiny and unimportant difference can be statistically significant. With a small sample, an important difference can miss significance. Effect sizes let readers judge real-world importance and compare studies, and APA style expects one for every main result.",
+ study:"Two studies both report p = .04. In one, d = 0.15 (a tiny gain, found with 1,000 students). In the other, d = 0.90 (a large gain, found with 20 students). The effect sizes show which finding matters more for practice, and which deserves a bigger follow-up study.",
+ extra:()=>`<h3>Effect size benchmarks</h3>${table(["Measure","Used with","Small","Medium","Large"],[["Cohen’s d","t-tests","0.2","0.5","0.8"],["r","Correlation","0.1","0.3","0.5"],["η²","ANOVA",".01",".06",".14"],["Cramér’s V (2 columns)","Chi-square",".1",".3",".5"]])}<p class="meta">These are rough guides. Always judge an effect against what is normal in your field.</p>`,
+ formula:["s_p = √{[(n₁ − 1)s₁² + (n₂ − 1)s₂²] ÷ (n₁ + n₂ − 2)}","d = (x̄₁ − x̄₂) ÷ s_p"],
+ dataset:"reading",
+ sample:r=>({...groupsSample(r,8),ctx:"Post-programme reading scores for random samples from each group."}),
+ show:groupsShow,
+ steps:d=>{const o=indT(d),sp=Math.sqrt(o.sp2);return[
+  ["Find the difference between means","This is the raw size of the effect, in test points.",`${fmt(o.m1)} − ${fmt(o.m2)} = <mark>${fmt(o.m1-o.m2)}</mark>`],
+  ["Find each group’s SD","The effect is judged against how much scores normally vary.",`s₁ = ${fmt(o.s1)}, s₂ = ${fmt(o.s2)}`],
+  ["Pool the SDs","One combined SD gives a fair yardstick for both groups.",`s_p = √{[${o.n1-1} × ${fmt(o.s1**2)} + ${o.n2-1} × ${fmt(o.s2**2)}] ÷ ${o.df}} = √${fmt(o.sp2)} = <mark>${fmt(sp)}</mark>`],
+  ["Calculate Cohen’s d","Dividing by the SD turns ‘points’ into ‘standard deviations’, so results can be compared across studies.",`d = ${fmt(o.m1-o.m2)} ÷ ${fmt(sp)} = <mark>${fmt(o.d)}</mark>`],
+  ["Interpret the size","Benchmarks help readers judge practical importance.",`|d| = ${fmt(Math.abs(o.d))}: <mark>${dLabel(o.d)}</mark>. The groups are about ${fmt(Math.abs(o.d))} standard deviations apart.`],
+  ["Put it next to the p-value","Readers need both: is it real, and is it big?",`t(${o.df}) = ${fmt(o.t)}, ${fmtP(o.p)}, d = ${fmt(o.d)}. ${o.p<.05?"Significant":"Not significant"} and ${dLabel(o.d).split(" (")[0].toLowerCase()}.`]];},
+ report:d=>{const o=indT(d);return `The difference between Intervention (M = ${fmt(o.m1)}) and Control (M = ${fmt(o.m2)}) students was ${dLabel(o.d).split(" (")[0].toLowerCase()}, d = ${fmt(o.d)}, t(${o.df}) = ${fmt(o.t)}, ${fmtP(o.p)}.`;},
+ fields:[
+  {k:"diff",label:"Difference in means (x̄₁ − x̄₂)",t:d=>mean(d.A)-mean(d.B)},
+  {k:"sp",label:"Pooled SD (s_p)",t:d=>Math.sqrt(indT(d).sp2),tol:{abs:.05},hint:()=>"Square root of the pooled variance."},
+  {k:"d",label:"Cohen’s d",t:d=>indT(d).d,tol:{abs:.02},hint:()=>"Difference in means ÷ pooled SD."},
+  {k:"size",label:"Size of the effect",type:"choice",options:["Negligible (below 0.2)","Small (0.2 to 0.5)","Medium (0.5 to 0.8)","Large (0.8 or more)"],t:d=>dLabel(indT(d).d),hint:()=>"Ignore the sign and use the benchmarks."}
+ ]
+});
+const TESTS=["One-sample t-test","Independent t-test","Paired t-test","One-way ANOVA","Pearson correlation","Simple linear regression","Chi-square test"];
+LESSONS.push({
+ id:"choosing-a-test",stage:"rep",title:"Choosing the right test",blurb:"Match your research question and data to a test.",
+ intro:"Choosing a test comes down to three questions: what is your research question about, what level of measurement are your variables, and how many groups are you comparing?",
+ terms:[
+  ["Parametric test","A test that assumes numerical, roughly normal data, e.g. t-tests, ANOVA, Pearson’s r."],
+  ["Non-parametric test","A test with fewer assumptions, used for ordinal or clearly non-normal data, e.g. Mann–Whitney U, Wilcoxon, Kruskal–Wallis, Spearman’s rho."],
+  ["Between-subjects design","Different people in each group: use independent tests."],
+  ["Within-subjects design","The same people measured more than once: use paired or repeated-measures tests."]
+ ],
+ why:"Using the wrong test is one of the most common reasons examiners and reviewers question a quantitative study. The research question and the type of data already tell you which test fits; you don’t get to pick the one that gives the nicest p-value.",
+ study:"A Caribbean thesis on device access asks whether ownership (yes/no) differs by location (three categories). Both variables are categorical, so the student uses chi-square, not a t-test. A second question compares wellbeing (interval) across three school types, so it uses a one-way ANOVA.",
+ extra:()=>`<div class="row"><a class="btn primary" href="#choose">Open the test chooser</a></div>`,
+ dataset:"wellbeing",
+ activity:{type:"custom",render:el=>renderSort(el,"choosing-a-test",[
+   {q:"Compare the mean wellbeing of urban and rural teachers.",options:TESTS,a:1,why:"Two separate groups, numerical outcome."},
+   {q:"Compare students’ reading scores before and after the programme.",options:TESTS,a:2,why:"The same students measured twice."},
+   {q:"Is weekly study time related to exam score?",options:TESTS,a:4,why:"Two numerical variables measured on the same people."},
+   {q:"Is device ownership (yes/no) related to school location?",options:TESTS,a:6,why:"Both variables are categorical."},
+   {q:"Do teachers in Jamaica, Trinidad and Tobago, Barbados and Guyana differ in mean wellbeing?",options:TESTS,a:3,why:"Four independent groups, numerical outcome."},
+   {q:"Is our sample’s mean wellbeing different from the regional benchmark of 32?",options:TESTS,a:0,why:"One group compared with a known value."},
+   {q:"Predict exam score from weekly study hours.",options:TESTS,a:5,why:"Prediction of one numerical variable from another."},
+   {q:"Are teachers’ plans to migrate (yes, no, unsure) related to their country?",options:TESTS,a:6,why:"Both variables are categorical."}
+  ],"Which test fits?")}
+});
+LESSONS.push({
+ id:"reporting-results",stage:"rep",title:"Writing up results",blurb:"Report statistics clearly in APA style.",
+ intro:"Good reporting gives readers the descriptive statistics, the test result, the effect size and a plain-language conclusion, in that order.",
+ terms:[
+  ["APA style","The reporting format used across education and the social sciences (7th edition)."],
+  ["Descriptive statistics","Report M and SD (or Mdn and IQR) for each group before any test."],
+  ["Test statistic with df","For example t(58) = 3.27, F(2, 42) = 6.81, χ²(2, N = 200) = 11.6, r(48) = .62."],
+  ["Exact p-values","Report p to two or three decimals (p = .032). Below .001, write p < .001. No zero before the decimal point for values that can’t exceed 1 (p, r)."],
+  ["Italics","Statistical symbols such as M, SD, t, F, p, r and N are written in italics."],
+  ["Plain-language conclusion","A sentence that says what the result means for your research question."]
+ ],
+ why:"Readers, examiners and journal reviewers check that the numbers support your claims. A complete, standard write-up shows your analysis is sound and lets others compare or replicate your work.",
+ study:"Weak: ‘The programme worked (p < .05).’ Strong: ‘Intervention students (M = 63.4, SD = 9.1) scored higher than control students (M = 55.2, SD = 10.3), t(58) = 3.27, p = .002, d = 0.84, a large effect.’",
+ extra:()=>`<h3>Reporting formats</h3>${table(["Test","Format"],[
+   ["Descriptives","M = 63.40, SD = 9.12"],["Confidence interval","M = 61.25, 95% CI [55.10, 67.40]"],["One-sample t-test","t(7) = 2.31, p = .054"],["Independent t-test","t(58) = 3.27, p = .002, d = 0.84"],["Paired t-test","t(59) = 6.12, p < .001"],["One-way ANOVA","F(2, 42) = 6.81, p = .003, η² = .24"],["Chi-square","χ²(2, N = 200) = 11.60, p = .003, V = .24"],["Correlation","r(48) = .62, p < .001"],["Regression","b = 2.41, R² = .38"]].map(r=>[r[0],`<span style="white-space:normal">${r[1]}</span>`]))}`,
+ dataset:"reading",
+ activity:{type:"custom",render:el=>renderSort(el,"reporting-results",[
+   {q:"Which write-up of a t-test is complete and correct?",options:["Intervention students (M = 63.4, SD = 9.1) scored higher than control students (M = 55.2, SD = 10.3), t(58) = 3.27, p = .002, d = 0.84.","The intervention group was better (p < .05).","t = 3.27, so the programme definitely works."],a:0,why:"It gives descriptives, the test with df, an exact p, and an effect size, without overclaiming."},
+   {q:"Which correlation write-up is correct?",options:["Studying more causes higher exam scores, r = .62.","There was a strong positive correlation between study hours and exam scores, r(48) = .62, p < .001.","r = 0.62, which means 62% of the effect."],a:1,why:"It reports direction, strength, df and p, and avoids claiming cause."},
+   {q:"How should you report a non-significant result?",options:["Wellbeing did not differ significantly between urban and rural teachers, t(43) = 0.84, p = .405.","Urban and rural teachers have exactly the same wellbeing (p = .405).","The result was almost significant, so rural teachers are worse off."],a:0,why:"Report it plainly. A non-significant result is not proof of no difference, and ‘almost significant’ is not significant."},
+   {q:"Which chi-square write-up is correct?",options:["Chi-square was 11.6.","Device ownership was associated with school location, χ²(2, N = 200) = 11.60, p = .003.","Location caused device ownership, p = .003."],a:1,why:"It includes df, N, the statistic and p, and describes an association rather than a cause."},
+   {q:"How do you report p = 0.0004 in APA style?",options:["p < .001","p = 0.0004","p = .000"],a:0,why:"Values below .001 are reported as p < .001. A p-value is never exactly zero."}
+  ],"Spot the strong write-up")}
+});
+
+/* ===== Caribbean lens for every lesson ===== */
+const LENS={
+ "what-is-statistics":"Small-island populations are small. A sample of 300 might be a large share of all Grade 4 students on a smaller island, but a tiny share of Jamaica’s. Always ask how big the population is, and who could not be reached.",
+ "variables":"Language is part of measurement. Whether a child is tested only in English, or allowed to show understanding in Jamaican Creole, changes what a score actually measures. Ask what each variable really captures in a Caribbean classroom.",
+ "hypotheses":"Whose questions are being asked? Caribbean research is often shaped by priorities set by funders abroad. Strong hypotheses start from local concerns such as learning lost to hurricanes, teacher migration or language in education.",
+ "frequency-tables":"Percentages from small samples can swing a lot. In a school of 40 teachers, one person is 2.5%. Report counts alongside percentages so readers see the real numbers.",
+ "central-tendency":"Averages can hide inequality. A national mean can look healthy while some parishes or rural schools lag far behind. Report averages for subgroups as well as the overall figure.",
+ "variability":"Spread is a story about equity. A large standard deviation in exam results can signal that some students are well served and others are being left behind.",
+ "shape-outliers":"Before deleting an ‘outlier’, ask who it is. An unusually low score might belong to a student from the school hit hardest by a storm. Check the context, not just the number.",
+ "z-scores":"A z-score compares a student only with the group used for the mean and SD. When judging Caribbean learners, compare with a Caribbean group, not an overseas norm.",
+ "correlation":"Correlation is not causation, especially with social data. Device access and exam scores may both reflect household income. Name the likely third variables in your context.",
+ "regression":"Predictions are only as fair as the data behind them. A model built mostly on urban or inland schools may predict badly for rural, coastal or small-island schools.",
+ "hypothesis-testing":"Statistical significance depends heavily on sample size. Small Caribbean studies can miss real effects (Type II errors). Report effect sizes and confidence intervals so important findings aren’t dismissed.",
+ "confidence-intervals":"With small regional samples, confidence intervals are wide. That is honest uncertainty, not failure. Say so plainly, and use it to argue for larger, regional studies.",
+ "one-sample-t":"Ask where the benchmark came from. Comparing Caribbean scores with an international benchmark may measure how well the test fits our context as much as how much students have learned.",
+ "independent-t":"Check whether the groups started out equal. School placement often sorts students before any programme begins, so a difference may come from selection rather than the programme.",
+ "paired-t":"A before-and-after gain during a hurricane season or a disrupted year may reflect recovery as much as teaching. Name the events that happened between the two measurements.",
+ "anova":"When you compare islands or school types, group differences often reflect resources, staffing and history. Use ANOVA to show a gap, then explain it with context rather than blame.",
+ "chi-square":"Gaps in device and internet access shaped who could keep learning during COVID-19 closures. Chi-square can make that inequality visible to policymakers.",
+ "effect-size":"Effect sizes help small-island studies be heard. A medium effect found with 25 students in one parish can matter for practice, even if p is above .05.",
+ "choosing-a-test":"Choose the test that fits your question and data, not the one used in an overseas study you admire. Your design decides the test.",
+ "reporting-results":"Write for two audiences: examiners and the communities you studied. Add a short plain-language summary that a principal, parent or ministry officer could use."
+};
+
+/* ===== regression rebuilt on the hurricane data ===== */
+function hurSample(r,n){let rows,c;for(let k=0;k<60;k++){rows=pickRows(r,"hurricane",n);c=corrParts(rows.map(x=>x.days_closed),rows.map(x=>x.reading_change));if(c.sxx>0&&c.syy>0&&Math.abs(c.r)<.995)break;}return rows;}
+const REG={
+ id:"regression",stage:"rel",title:"Simple linear regression",blurb:"Draw the line of best fit and use it to predict.",
+ intro:"Regression turns a relationship into an equation: predicted outcome = intercept + slope × predictor. Here you will use it to estimate how much learning a school loses for each day it is closed by a hurricane.",
+ terms:[
+  ["Simple linear regression","A method that fits the straight line that best predicts one variable (y) from another (x)."],
+  ["Predictor (x)","The variable used to make the prediction, e.g. days a school was closed."],
+  ["Outcome (y)","The variable being predicted, e.g. change in reading score."],
+  ["Slope (b)","How much y is predicted to change for every one-unit increase in x."],
+  ["Intercept (a)","The predicted y when x is 0. Here: the expected change in reading score for a school that lost no days."],
+  ["Predicted value (ŷ)","The value of y the line predicts for a given x."],
+  ["Residual","The actual y minus the predicted ŷ: how far the line missed for that school."]
+ ],
+ why:"Regression goes a step beyond correlation. It gives an equation for predicting the outcome, and the slope says how much the outcome changes per unit of the predictor. That gives planners a concrete number: how many points of learning each lost day costs.",
+ study:"‘Each additional school day lost to the hurricane season was associated with a 0.45-point fall in the school’s average reading score (b = −0.45, R² = .52).’ A ministry could use a figure like this to plan catch-up support for the schools closed longest.",
+ formula:["b = Σ(x − x̄)(y − ȳ) ÷ Σ(x − x̄)²","a = ȳ − b × x̄","ŷ = a + b × x","Residual = y − ŷ"],
+ dataset:"hurricane",
+ sample:r=>{const rows=hurSample(r,r.pick([7,8])),xs=rows.map(x=>x.days_closed);return{rows,xs,ys:rows.map(x=>x.reading_change),x0:r.int(Math.min(...xs),Math.max(...xs)),ctx:"Days closed and change in average reading score for a random sample of primary schools after the hurricane season."};},
+ show:d=>table(["School","Days closed (x)","Reading change (y)"],d.rows.map(r=>[r.id,r.days_closed,fmt(r.reading_change)]))+`<p class="meta">You will predict the reading change for a school closed for <strong>${d.x0} days</strong>, and find the residual for school ${d.rows[0].id}.</p>`,
+ steps:d=>{const c=corrParts(d.xs,d.ys),yhat=c.a+c.b*d.x0,p0=c.a+c.b*d.xs[0],res=d.ys[0]-p0;return[
+  ["Find both means","The regression line always passes through the point (x̄, ȳ).",`x̄ = <mark>${fmt(c.mx)}</mark> days, ȳ = <mark>${fmt(c.my)}</mark> points`],
+  ["Work out the sums you need","The slope compares how x and y vary together with how x varies on its own.",corrTable(c,"x","y")],
+  ["Calculate the slope (b)","The slope is the headline result: the change in y for each extra unit of x.",`b = ${fmt(c.sxy)} ÷ ${fmt(c.sxx)} = <mark>${fmt(c.b)}</mark>. Each extra day closed goes with a change of about ${fmt(c.b)} points in average reading score.`],
+  ["Calculate the intercept (a)","The intercept fixes where the line sits on the graph.",`a = ${fmt(c.my)} − (${fmt(c.b)} × ${fmt(c.mx)}) = <mark>${fmt(c.a)}</mark>`],
+  ["Write the equation and draw the line","The equation is what you use for predictions.",`ŷ = ${fmt(c.a)} + (${fmt(c.b)})x${scatter(d.xs,d.ys,{line:[c.a,c.b],xTitle:"Days closed",yTitle:"Change in reading score"})}`],
+  ["Predict a school’s reading change","Prediction is the practical use of regression. Only predict within the range of your data.",`For x = ${d.x0}: ŷ = ${fmt(c.a)} + (${fmt(c.b)} × ${d.x0}) = <mark>${fmt(yhat)}</mark>`],
+  ["Find a residual","Residuals show how well the line fits. A school doing much better than predicted may have something to teach others, such as remote lessons.",`School ${d.rows[0].id}: actual ${fmt(d.ys[0])}, predicted ${fmt(p0)}, residual = ${fmt(d.ys[0])} − (${fmt(p0)}) = <mark>${fmt(res)}</mark>`],
+  ["Check how much the line explains","R² (equal to r² in simple regression) tells you how useful the predictions are.",`R² = ${fx(c.r*c.r,3)}, so days closed explain about ${fmt(c.r*c.r*100,0)}% of the variation in reading change here.`]];},
+ report:d=>{const c=corrParts(d.xs,d.ys);return `Days closed predicted the change in reading scores, b = ${fmt(c.b)}, R² = ${noLead(fx(c.r*c.r,2))}: each additional day closed was associated with a ${fmt(Math.abs(c.b))}-point ${c.b<=0?"fall":"rise"} in average reading score. Regression equation: ŷ = ${fmt(c.a)} + (${fmt(c.b)})x.`;},
+ fields:[
+  {k:"b",label:"Slope (b)",t:d=>corrParts(d.xs,d.ys).b,tol:{abs:.02},hint:()=>"Σ(x − x̄)(y − ȳ) ÷ Σ(x − x̄)². It will usually be negative here."},
+  {k:"a",label:"Intercept (a)",t:d=>corrParts(d.xs,d.ys).a,tol:{abs:.2},hint:()=>"ȳ − b × x̄. Watch the signs."},
+  {k:"yhat",label:"Predicted change for the given days",t:d=>{const c=corrParts(d.xs,d.ys);return c.a+c.b*d.x0;},tol:{abs:.3},hint:d=>`a + b × ${d.x0}.`},
+  {k:"res",label:"Residual for the first school",t:d=>{const c=corrParts(d.xs,d.ys);return d.ys[0]-(c.a+c.b*d.xs[0]);},tol:{abs:.3},hint:()=>"Actual minus predicted."}
+ ]
+};
+LESSONS.splice(LESSONS.findIndex(l=>l.id==="regression"),1,REG);
+
+/* ===== STAGE 6: CARIBBEAN RESEARCH IN PRACTICE ===== */
+STAGES.push({n:6,key:"carib",title:"Caribbean research in practice",desc:"Read data critically and find real Caribbean statistics for your own research.",color:"var(--s6)"});
+STAGE.carib=STAGES[5];
+LESSONS.push({
+ id:"critical-data",stage:"carib",title:"Reading data critically",blurb:"Ask who collected the data, who is missing, and whose story it tells.",
+ intro:"Reading data is like reading any text. Critical literacy asks who wrote it, for whom, and whose voices are missing. The same questions apply to numbers.",
+ terms:[
+  ["Critical data literacy","The ability to question how data were produced, what they leave out and how they are used, as well as how to calculate with them."],
+  ["Representativeness","How well a sample mirrors the population. A study of only urban schools does not represent rural ones."],
+  ["Sampling bias","When the way people were chosen makes some groups more likely to be included than others."],
+  ["Non-response bias","When the people who answer a survey differ from those who don’t, e.g. online surveys reaching only students with internet."],
+  ["Disaggregation","Breaking an overall figure down by groups (parish, gender, school type) to reveal differences hidden in the average."],
+  ["Benchmark (norming) bias","Judging people against standards developed for a different population, such as overseas test norms."],
+  ["Deficit framing","Presenting a group as lacking or failing without considering the conditions they face."],
+  ["Data sovereignty","The principle that communities and nations should control data collected about them, including where it is stored and how it is used."],
+  ["Informed consent","Participants agree to take part after understanding what the research involves. For children, parents or guardians also consent."],
+  ["Positionality","A researcher’s own background and relationship to the study, which they state openly in the methods."]
+ ],
+ why:"Correct calculations can still tell a misleading story. Caribbean researchers often work with small samples, imported tests and data collected for others’ purposes. Asking critical questions protects the people in your data and makes your conclusions stronger and more honest.",
+ study:"A national report gives one average Grade 6 score and calls the results ‘satisfactory’. When the data are broken down by parish, the gap between the highest and lowest parish turns out to be more than ten points. The single average hid exactly the inequality policymakers most needed to see.",
+ dataset:"grade6",
+ activity:{type:"custom",render:el=>{renderDisaggDemo(el);renderSort(el,"critical-data",[
+   {q:"A study of Jamaican reading uses only schools in the Corporate Area, then claims results for the whole island. The main problem is…",options:["Sampling bias","A small effect size","Using the wrong test"],a:0,why:"Rural schools had no chance of being included, so the sample doesn’t represent the island."},
+   {q:"An online survey about device access gets most of its replies from students who already have devices. This is…",options:["Non-response bias","Disaggregation","Positionality"],a:0,why:"The students most affected by the problem are the least likely to answer."},
+   {q:"A report gives one national average PEP-style score, hiding large differences between parishes. What is missing?",options:["Disaggregation","Informed consent","A larger p-value"],a:0,why:"Breaking results down by parish would reveal the gaps."},
+   {q:"A reading test normed on children in the United States is used to label Creole-speaking Jamaican children as ‘below average’. This is…",options:["Benchmark (norming) bias","Data sovereignty","A Type II error"],a:0,why:"The comparison group comes from a different language and cultural context."},
+   {q:"Headline: ‘Rural students fail’, when rural schools had fewer trained teachers and lost more days to hurricanes. This is…",options:["Deficit framing","Representativeness","Random sampling"],a:0,why:"It blames the students and ignores the conditions they faced."},
+   {q:"Student data collected by a foreign app company is stored overseas and used to train its products without the school’s agreement. This raises concerns about…",options:["Data sovereignty","Effect size","Disaggregation"],a:0,why:"The community has lost control over data about its own children."},
+   {q:"A researcher who used to teach at the school she is evaluating explains this in her methods chapter. She is giving a…",options:["Positionality statement","Null hypothesis","Confidence interval"],a:0,why:"Stating her relationship to the study lets readers judge her interpretations."}
+  ],"spot the critical issue");}}
+});
+LESSONS.push({
+ id:"caribbean-data-sources",stage:"carib",title:"Finding real Caribbean data",blurb:"Where to find published regional statistics, and how to use them responsibly.",
+ intro:"The synthetic data in this lab are for practice. For a thesis or report, you will often use real published statistics. Here is where to look, and how to use them well.",
+ terms:[
+  ["Primary data","Data you collect yourself through surveys, tests, interviews or observation."],
+  ["Secondary data","Data collected by someone else, such as a national census, an exam body’s annual report or a ministry’s statistics."],
+  ["Official statistics","Figures published by national statistics offices, ministries, central banks and regional bodies."],
+  ["Technical notes (metadata)","The definitions, methods and sample details published with a data set. Read them before you analyse."],
+  ["Time series","The same measure recorded over several years, useful for spotting trends."],
+  ["Data citation","A reference to a data set, including the producer, year, title and where it was found."]
+ ],
+ why:"Secondary data let you answer bigger questions than one small study can: trends over years, comparisons across parishes or islands, and context for your own findings. They also save time and money. But official figures still need the same critical reading as any other data.",
+ study:"A student researching teacher shortages combines her own survey of 60 teachers (primary data) with ministry staffing figures and published teacher-migration estimates (secondary data). The official figures show the national trend; her survey explains why teachers in her parish are leaving.",
+ extra:()=>`<h3>Where to look</h3>${table(["Source","What you can find there"],[
+   ["Statistical Institute of Jamaica (STATIN)","Census, labour force and household survey data for Jamaica"],
+   ["Planning Institute of Jamaica (PIOJ)","The annual <em>Economic and Social Survey Jamaica</em>, including chapters on education"],
+   ["Ministry of Education and Youth (Jamaica)","Education statistics on enrolment, teachers, schools and national assessments such as PEP"],
+   ["National statistical offices across the region","For example, Trinidad and Tobago’s national statistics office, the Barbados Statistical Service and the Guyana Bureau of Statistics"],
+   ["Caribbean Examinations Council (CXC)","Reports on CSEC and CAPE results"],
+   ["CARICOM Secretariat","Regional statistics comparing member states"],
+   ["Caribbean Development Bank","Regional economic and social reports"],
+   ["Bank of Jamaica and other central banks","Economic data such as remittances"],
+   ["UNESCO Institute for Statistics and World Bank Open Data","International education and development indicators for comparison"]
+  ].map(r=>[`<span style="white-space:normal">${r[0]}</span>`,`<span style="white-space:normal">${r[1]}</span>`]))}
+  <p class="meta">Websites and report names change, so search for the organisation’s current publications and check the year of any figure you use.</p>
+  <h3>Six steps for using published data</h3><ol>
+   <li><strong>Find</strong> the most recent, official source for your question.</li>
+   <li><strong>Read the technical notes:</strong> how was each figure defined, who was counted, and in what year?</li>
+   <li><strong>Check the level of measurement</strong> of each variable so you choose the right analysis.</li>
+   <li><strong>Record the citation</strong> as you go, including the table or page number.</li>
+   <li><strong>Enter or download</strong> the figures into a spreadsheet and check them twice.</li>
+   <li><strong>Read critically:</strong> who is missing, and what might the averages hide? Then analyse and report the source in your write-up.</li></ol>`,
+ activity:{type:"custom",render:el=>renderSort(el,"caribbean-data-sources",[
+   {q:"You need CSEC pass rates by subject over five years. Where should you look first?",options:["Caribbean Examinations Council (CXC) reports","Bank of Jamaica","World Bank Open Data"],a:0,why:"CXC administers CSEC and reports on results."},
+   {q:"You need household and labour force figures for Jamaica.",options:["Statistical Institute of Jamaica (STATIN)","CXC","Caribbean Development Bank"],a:0,why:"STATIN runs Jamaica’s census and household and labour force surveys."},
+   {q:"You want a yearly overview of Jamaica’s education sector alongside economic and social trends.",options:["PIOJ’s Economic and Social Survey Jamaica","A newspaper opinion column","CARICOM Secretariat only"],a:0,why:"The Economic and Social Survey Jamaica brings sector data together each year."},
+   {q:"You want to compare primary school enrolment across Caribbean countries and with other regions.",options:["UNESCO Institute for Statistics or World Bank Open Data","A single school’s records","Bank of Jamaica"],a:0,why:"These collect comparable international education indicators."},
+   {q:"You find a figure in a ministry report but it doesn’t say which year or which schools were included. What should you do?",options:["Check the technical notes or contact the source before using it","Use it anyway because it’s official","Round it to look neater"],a:0,why:"Without definitions and dates, you can’t judge whether the figure fits your study."},
+   {q:"Your survey of 60 teachers is…",options:["Primary data","Secondary data","Official statistics"],a:0,why:"You collected it yourself for your own study."}
+  ],"match the question to the source")}
+});
+function renderDisaggDemo(el){
+  const rows=getData("grade6"),w=document.createElement("div");
+  w.innerHTML=`<h3>Try it: what does the average hide?</h3><div class="sheet">
+   <p>This uses the ${bankLink("grade6")}. Choose a subject and a way to break down the results, then compare each group with the national average.</p>
+   <div class="row"><div class="seg" role="group" aria-label="Subject" data-g="subj"><button data-v="maths" aria-pressed="true">Mathematics</button><button data-v="language_arts" aria-pressed="false">Language Arts</button></div>
+   <div class="seg" role="group" aria-label="Break down by" data-g="by"><button data-v="parish" aria-pressed="true">Parish</button><button data-v="area" aria-pressed="false">Area</button><button data-v="sector" aria-pressed="false">Sector</button><button data-v="gender" aria-pressed="false">Gender</button></div></div>
+   <div data-a="out"></div></div>`;
+  el.appendChild(w);
+  let subj="maths",by="parish";
+  const show=()=>{
+    const all=rows.map(r=>r[subj]),nat=mean(all);
+    const groups=[...new Set(rows.map(r=>r[by]))].map(g=>{const v=rows.filter(r=>r[by]===g).map(r=>r[subj]);return{g,n:v.length,m:mean(v)};}).sort((a,b)=>b.m-a.m);
+    const gap=groups[0].m-groups[groups.length-1].m;
+    $('[data-a="out"]',w).innerHTML=`<p>National average: <mark>${fmt(nat,1)}</mark> (n = ${all.length})</p>
+     ${table(["Group","n","Mean","Difference from national average"],groups.map(x=>[x.g,x.n,fmt(x.m,1),(x.m-nat>=0?"+":"")+fmt(x.m-nat,1)]))}
+     ${barChart(groups.map(x=>x.g.replace("St ","St.").slice(0,10)),groups.map(x=>Math.round(x.m)),{label:"Mean score by group"})}
+     <p class="callout">The gap between the highest group (${groups[0].g}) and the lowest (${groups[groups.length-1].g}) is <strong>${fmt(gap,1)} points</strong>. None of that shows up in the single national average of ${fmt(nat,1)}.</p>
+     <p class="meta">Next step: a test such as ANOVA or an independent t-test tells you whether gaps like these are bigger than chance. Then context explains why they exist.</p>`;
+  };
+  $$(".seg",w).forEach(g=>$$("button",g).forEach(b=>b.onclick=()=>{$$("button",g).forEach(x=>x.setAttribute("aria-pressed",x===b));if(g.dataset.g==="subj")subj=b.dataset.v;else by=b.dataset.v;show();}));
+  show();
+}
+
+/* ===== activities ===== */
+function buildSort(id,items,heading,onRestart){
+  const box=document.createElement("div");
+  const pass=Math.ceil(items.length*.7);
+  box.innerHTML=`<h3>Try it: ${heading}</h3><div class="sheet">${items.map((it,i)=>`<div class="act-item" data-i="${i}"><p class="act-q">${it.q}</p><div class="opts">${it.options.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join("")}</div><p class="explain" hidden></p></div>`).join("")}<p class="meta" data-a="sum">Answered 0 of ${items.length}.</p></div>`;
+  let answered=0,right=0;
+  $$(".act-item",box).forEach(itEl=>{
+    const it=items[+itEl.dataset.i];
+    $$(".opt",itEl).forEach(b=>b.onclick=()=>{
+      const ok=+b.dataset.j===it.a;
+      $$(".opt",itEl).forEach(x=>{x.disabled=true;if(+x.dataset.j===it.a)x.classList.add("right");});
+      if(!ok)b.classList.add("wrong");
+      const ex=$(".explain",itEl);ex.hidden=false;ex.className="explain "+(ok?"ok":"bad");ex.innerHTML=`${ok?"✓ Correct.":"✗ Not quite."} ${it.why}`;
+      answered++;if(ok)right++;award(ok,10);
+      const sumEl=$('[data-a="sum"]',box);
+      if(answered<items.length){sumEl.textContent=`Answered ${answered} of ${items.length}.`;return;}
+      if(right>=pass)markDone(id);
+      sumEl.innerHTML=`<strong>${right} of ${items.length} correct.</strong> ${right>=pass?"Lesson complete.":`Get at least ${pass} right to complete the lesson.`} <button class="btn" data-a="again">Start again</button>`;
+      $('[data-a="again"]',box).onclick=()=>{const nb=onRestart();box.replaceWith(nb);};
+    });
+  });
+  return box;
+}
+function renderSort(el,id,items,heading){
+  const make=()=>buildSort(id,items,heading,make);
+  el.appendChild(make());
+}
+function renderLevelSort(el){
+  const all=DATASETS.flatMap(ds=>ds.codebook.filter(c=>c.level!=="id").map(c=>({dsKey:ds.key,dsTitle:ds.title,...c})));
+  const holder=document.createElement("div");el.appendChild(holder);
+  const round=()=>{
+    const items=Rng(Math.floor(Math.random()*1e9)).sample(all,8).map(c=>{
+      const ex=[...new Set(getData(c.dsKey).map(r=>r[c.name]))].slice(0,4).join(", ");
+      return{q:`${c.label} <span class="meta">(${c.dsTitle}). Example values: ${ex}</span>`,options:["Nominal","Ordinal","Interval","Ratio"],a:["nominal","ordinal","interval","ratio"].indexOf(c.level),why:`${c.desc} ${LEVEL_TEXT[c.level]}`};
+    });
+    holder.innerHTML="";
+    holder.appendChild(buildSort("variables",items,"classify variables from the data bank",()=>{round();return document.createElement("div");}));
+    const b=document.createElement("button");b.className="btn";b.textContent="Try 8 different variables";b.onclick=round;holder.appendChild(b);
+  };
+  round();
+}
+const gauss=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);};
+function renderSamplingDemo(el){
+  const pop=populationReading(),mu=mean(pop);
+  const w=document.createElement("div");
+  w.innerHTML=`<h3>Try it: sampling variation</h3><div class="sheet">
+   <p>Below is a population of 500 Grade 4 reading scores. Its true mean, the parameter, is <mark>μ = ${fmt(mu)}</mark>. In real research you never know this number. Draw samples and watch how close each sample mean (the statistic) gets to it.</p>
+   ${histogram(pop,{bins:10,label:"Histogram of the population",xTitle:"Reading score"})}
+   <div class="row"><span class="meta">Sample size:</span><div class="seg" role="group" aria-label="Sample size">${[5,15,50].map((n,i)=>`<button data-n="${n}" aria-pressed="${i===0}">${n} students</button>`).join("")}</div></div>
+   <div class="row"><button class="btn primary" data-a="one">Draw one sample</button><button class="btn" data-a="ten">Draw 10 samples</button><button class="btn" data-a="clear">Clear</button></div>
+   <div data-a="out"><p class="meta">No samples drawn yet.</p></div></div>`;
+  el.appendChild(w);
+  let n=5,means=[],last=[];
+  const out=$('[data-a="out"]',w);
+  const draw=()=>{last=[];for(let i=0;i<n;i++)last.push(pop[Math.floor(Math.random()*pop.length)]);means.push(mean(last));};
+  const show=()=>{
+    if(!means.length){out.innerHTML=`<p class="meta">No samples drawn yet.</p>`;return;}
+    const err=mean(means.map(m=>Math.abs(m-mu)));
+    out.innerHTML=`<p><strong>Latest sample (${n} students):</strong></p>${tiles(last)}<p>Sample mean = <mark>${fmt(mean(last))}</mark> (true mean ${fmt(mu)})</p>
+     <p><strong>All ${means.length} sample means so far:</strong></p>${tiles(means.map(m=>fmt(m,1)))}
+     <p>Smallest ${fmt(Math.min(...means),1)}, largest ${fmt(Math.max(...means),1)}. On average, these sample means miss the true mean by <mark>${fmt(err)}</mark> points.</p>
+     <p class="meta">Switch between 5, 15 and 50 students. Bigger samples bunch more tightly around μ, which is why larger samples give more precise estimates.</p>`;
+  };
+  $$(".seg button",w).forEach(b=>b.onclick=()=>{$$(".seg button",w).forEach(x=>x.setAttribute("aria-pressed",x===b));n=+b.dataset.n;means=[];show();});
+  $('[data-a="one"]',w).onclick=()=>{draw();show();markDone("what-is-statistics-demo");};
+  $('[data-a="ten"]',w).onclick=()=>{for(let i=0;i<10;i++)draw();show();};
+  $('[data-a="clear"]',w).onclick=()=>{means=[];show();};
+}
+function renderPowerDemo(el){
+  const w=document.createElement("div");
+  w.innerHTML=`<h3>Try it: run the same study many times</h3><div class="sheet">
+   <p>Imagine repeating the Bilingual Reading Programme Study again and again with new students. Choose how big the programme’s true effect is and how many students are in each group. Each run carries out an independent t-test at α = .05.</p>
+   <div class="row"><span class="meta">True effect:</span><div class="seg" role="group" aria-label="True effect" data-g="eff"><button data-v="0" aria-pressed="true">None</button><button data-v="4" aria-pressed="false">Small (4 points)</button><button data-v="10" aria-pressed="false">Large (10 points)</button></div></div>
+   <div class="row"><span class="meta">Students per group:</span><div class="seg" role="group" aria-label="Students per group" data-g="n"><button data-v="5" aria-pressed="true">5</button><button data-v="15" aria-pressed="false">15</button><button data-v="40" aria-pressed="false">40</button></div></div>
+   <div class="row"><button class="btn primary" data-a="one">Run the study once</button><button class="btn" data-a="many">Run it 100 times</button><button class="btn" data-a="clear">Clear</button></div>
+   <div data-a="out"><p class="meta">No studies run yet.</p></div></div>`;
+  el.appendChild(w);
+  let eff=0,n=5,runs=0,sig=0,last=null;
+  const out=$('[data-a="out"]',w);
+  const run=()=>{const A=[],B=[];for(let i=0;i<n;i++){A.push(55+eff+gauss()*12);B.push(55+gauss()*12);}
+    const o=indT({A,B});runs++;if(o.p<.05)sig++;last=o;};
+  const show=()=>{
+    if(!runs){out.innerHTML=`<p class="meta">No studies run yet.</p>`;return;}
+    const pct=sig/runs*100;
+    out.innerHTML=`<p><strong>Latest run:</strong> Intervention M = ${fmt(last.m1,1)}, Control M = ${fmt(last.m2,1)}, t(${last.df}) = ${fmt(last.t)}, ${fmtP(last.p)}: <mark>${last.p<.05?"significant":"not significant"}</mark></p>
+     <p><strong>${sig} of ${runs} runs</strong> were significant (${fmt(pct,0)}%).</p>
+     <p class="callout">${eff===0?`There is no real effect here, so every significant result is a <strong>Type I error</strong> (false alarm). Over many runs this settles near 5%, which is exactly what α = .05 allows.`:`There is a real effect, so the percentage of significant runs is the study’s <strong>power</strong>. Every non-significant run is a <strong>Type II error</strong>. Researchers usually aim for at least 80% power, which is why sample size planning matters.`}</p>`;
+  };
+  $$(".seg",w).forEach(g=>$$("button",g).forEach(b=>b.onclick=()=>{$$("button",g).forEach(x=>x.setAttribute("aria-pressed",x===b));if(g.dataset.g==="eff")eff=+b.dataset.v;else n=+b.dataset.v;runs=0;sig=0;show();}));
+  $('[data-a="one"]',w).onclick=()=>{run();show();};
+  $('[data-a="many"]',w).onclick=()=>{for(let i=0;i<100;i++)run();show();};
+  $('[data-a="clear"]',w).onclick=()=>{runs=0;sig=0;show();};
+}
+function tTableHTML(){
+  const dfs=[...Array(30).keys()].map(i=>i+1).concat([40,60,120]);
+  const half=Math.ceil(dfs.length/2),rows=[];
+  for(let i=0;i<half;i++){const a=dfs[i],b=dfs[i+half];rows.push([a,fx(tCrit(a),3),b??"",b?fx(tCrit(b),3):""]);}
+  return `<div class="working"><p><strong>Critical t values (two-tailed, α = .05)</strong></p>${table(["df","t*","df","t*"],rows)}<p class="meta">If the size of your t (ignore any minus sign) is bigger than t*, the result is significant. For confidence intervals, t* is the multiplier for the margin of error.</p></div>`;
+}
+
+/* ===== views ===== */
+const app=$("#app");
+const APP_VERSION="2.1";
+const cnt={w:{},p:{}};
+let bankKey="reading";
+
+function journeyView(){
+  const total=LESSONS.length,done=LESSONS.filter(l=>store.done[l.id]).length,nextL=LESSONS.find(l=>!store.done[l.id]);
+  const C=113.1,pct=done/total;
+  app.innerHTML=`<section class="hero">
+   <canvas id="heroNet" aria-hidden="true"></canvas>
+   <p class="eyebrow">Quantitative research · Caribbean edition</p>
+   <h2 class="display">Turn numbers into <span class="grad">evidence.</span></h2>
+   <p class="lede">Six stages take you from the basic language of statistics to running, reporting and critically reading quantitative research. Every example is set in Caribbean schools, universities and communities, with fresh synthetic data each time you practise.</p>
+   <div class="row">${nextL?`<a class="btn primary" href="#${nextL.id}">${done?"Continue":"Start the journey"}: ${nextL.title} →</a>`:`<a class="btn primary" href="#data">Draw a new sample and practise again →</a>`}<a class="btn" href="#data">Explore the data bank</a><a class="btn" href="#choose">Choose a test</a></div>
+   <div class="readout" aria-live="off"><small>Live formula</small><b id="readout">x̄ = Σx ÷ n</b></div>
+  </section>
+  <div class="stat-row">
+   <div><svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="bgc" cx="22" cy="22" r="18"/><circle class="fg" cx="22" cy="22" r="18" stroke-dasharray="${(pct*C).toFixed(1)} ${C}"/></svg><div><strong>${done}/${total}</strong><span class="meta">lessons completed</span></div></div>
+   <div><span class="stat-icon">${DATASETS.length}</span><div><strong>Data sets</strong><span class="meta">synthetic Caribbean studies</span></div></div>
+   <div><span class="stat-icon">#${store.sampleNo}</span><div><strong>Sample</strong><span class="meta">shared class data</span></div></div>
+   <div><span class="stat-icon">${store.score}</span><div><strong>Points</strong><span class="meta">${rankFor(store.score)}</span></div></div>
+  </div>
+  <p class="meta">A lesson is ticked when you answer everything in ‘Your turn’ correctly, or finish its activity.</p>
+  <div class="route">${STAGES.map(s=>`<section class="stage" style="--stage:${s.color}"><div class="stage-head" data-n="0${s.n}"><h3>${s.title}</h3><p>${s.desc}</p></div><ul class="stations">${LESSONS.filter(l=>l.stage===s.key).map(l=>`<li class="${store.done[l.id]?"done":""}"><a href="#${l.id}"><strong>${l.title}</strong><span>${l.blurb}</span></a></li>`).join("")}</ul></section>`).join("")}</div>`;
+  startHeroNet();startReadout();
+}
+function startHeroNet(){
+  const cv=$("#heroNet");if(!cv||!cv.getContext)return;
+  const ctx=cv.getContext("2d"),reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const css=getComputedStyle(document.documentElement),c1=css.getPropertyValue("--accent").trim()||"#2EE6D0",c2=css.getPropertyValue("--hi").trim()||"#FFD166",c3=css.getPropertyValue("--accent-2").trim()||"#8D7DFF";
+  let W=0,H=0;const dpr=Math.min(2,window.devicePixelRatio||1),pts=[];
+  const size=()=>{const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);};
+  size();
+  const N=Math.max(24,Math.min(80,Math.round(W*H/8000)));
+  for(let i=0;i<N;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.32,vy:(Math.random()-.5)*.32,r:Math.random()*1.7+.7,c:[c1,c2,c3][i%3]});
+  const frame=()=>{
+    if(!cv.isConnected){window.removeEventListener("resize",size);return;}
+    ctx.clearRect(0,0,W,H);
+    for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
+    ctx.lineWidth=1;
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.globalAlpha=(1-d/120)*.45;ctx.strokeStyle=c1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}
+    for(const p of pts){ctx.globalAlpha=.95;ctx.fillStyle=p.c;ctx.shadowColor=p.c;ctx.shadowBlur=10;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}
+    ctx.shadowBlur=0;ctx.globalAlpha=1;
+    if(!reduce)requestAnimationFrame(frame);
+  };
+  window.addEventListener("resize",size);frame();
+}
+const READOUTS=["x̄ = Σx ÷ n","s = √[Σ(x − x̄)² ÷ (n − 1)]","z = (x − x̄) ÷ s","r = Σ(x − x̄)(y − ȳ) ÷ √(SSx·SSy)","ŷ = a + bx","SE = s ÷ √n","t = (x̄₁ − x̄₂) ÷ SE","F = MS between ÷ MS within","χ² = Σ(O − E)² ÷ E","d = (x̄₁ − x̄₂) ÷ sₚ"];
+function startReadout(){
+  const el=$("#readout");if(!el||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  let i=0;const id=setInterval(()=>{if(!el.isConnected){clearInterval(id);return;}el.style.opacity=0;setTimeout(()=>{i=(i+1)%READOUTS.length;el.textContent=READOUTS[i];el.style.opacity=1;},380);},2800);
+}
+function updateProg(){const p=$("#prog");if(p)p.style.width=(LESSONS.filter(l=>store.done[l.id]).length/LESSONS.length*100)+"%";}
+function lessonView(L){
+  const st=STAGE[L.stage],idx=LESSONS.indexOf(L),prev=LESSONS[idx-1],next=LESSONS[idx+1];
+  app.innerHTML=`<article class="lesson" style="--stage:${st.color}">
+   <p class="crumb">Stage ${st.n}: ${st.title}</p>
+   <h2>${L.title}</h2><p class="lede">${L.intro}</p>
+   <h3>Key terms</h3><div class="sheet"><dl class="terms">${L.terms.map(([t,d])=>`<div class="term"><dt>${t}</dt><dd>${d}</dd></div>`).join("")}</dl></div>
+   <h3>Why researchers use it</h3><p>${L.why}</p>
+   <h3>In a real study</h3><div class="callout">${L.study}</div>
+   ${LENS[L.id]?`<h3>Caribbean lens</h3><div class="callout lens">${LENS[L.id]}</div>`:""}
+   ${L.extra?L.extra():""}
+   ${L.formula?`<h3>The formula</h3><div class="sheet formula-list">${L.formula.map(f=>`<p><span class="formula">${f}</span></p>`).join("")}</div>`:""}
+   ${L.dataset?`<p class="meta">This lesson uses the ${bankLink(L.dataset)} from the data bank.</p>`:""}
+   ${L.steps?`<h3>Worked example</h3><div class="sheet" id="wx"></div><h3>Your turn</h3><div class="sheet" id="px"></div>`:""}
+   ${L.activity?`<div id="act"></div>`:""}
+   <div class="pager">${prev?`<a class="btn" href="#${prev.id}">Previous: ${prev.title}</a>`:"<span></span>"}${next?`<a class="btn primary" href="#${next.id}">Next: ${next.title}</a>`:`<a class="btn primary" href="#journey">Back to the journey</a>`}</div>
+  </article>`;
+  if(L.steps){renderWorked(L);renderPractice(L);}
+  if(L.activity)L.activity.render($("#act"));
+}
+function allSteps(L,d){let s=L.steps(d);if(L.report)s=s.concat([["Report it","This is how the result would appear in a thesis or journal article.",`<div class="callout">${L.report(d)}</div>`]]);return s;}
+function stepLI(st){const li=document.createElement("li");li.className="step-in";li.innerHTML=`<h4>${st[0]}</h4><p class="why-step">Why: ${st[1]}</p><div>${st[2]}</div>`;return li;}
+function renderWorked(L){
+  const box=$("#wx");
+  const d=L.sample(Rng(hashStr(L.id+"|w")+store.sampleNo*7919+(cnt.w[L.id]||0)*131));
+  const steps=allSteps(L,d);let shown=0;
+  box.innerHTML=`<p><strong>${d.ctx}</strong></p>${L.show(d)}<ol class="steps" aria-live="polite"></ol>
+   <div class="row"><button class="btn primary" data-a="next"></button><button class="btn" data-a="all">Show all steps</button><button class="btn" data-a="new">New example</button></div><p class="meta" data-a="msg"></p>`;
+  const ol=$("ol",box),nb=$('[data-a="next"]',box),ab=$('[data-a="all"]',box);
+  const upd=()=>{const done=shown>=steps.length;nb.disabled=done;nb.textContent=done?"All steps shown":`Show step ${shown+1} of ${steps.length}`;ab.hidden=done;
+    $('[data-a="msg"]',box).textContent=done?"Now try one yourself in ‘Your turn’ below.":"Try each step yourself before you reveal it.";};
+  const reveal=()=>{ol.appendChild(stepLI(steps[shown]));shown++;upd();};
+  nb.onclick=reveal;ab.onclick=()=>{while(shown<steps.length)reveal();};
+  $('[data-a="new"]',box).onclick=()=>{cnt.w[L.id]=(cnt.w[L.id]||0)+1;renderWorked(L);};
+  upd();
+}
+function renderPractice(L){
+  const box=$("#px");
+  const d=L.sample(Rng(hashStr(L.id+"|p")+store.sampleNo*6151+(cnt.p[L.id]||0)*977));
+  const got=new Set();let bonus=false;
+  const fid=f=>`f-${L.id}-${f.k}`;
+  box.innerHTML=`<p><strong>${d.ctx}</strong></p>${L.show(d)}<p class="meta">Work it out on paper or a calculator. Round to two decimal places.</p>
+   <div class="answers">${L.fields.map(f=>`<div class="field" data-k="${f.k}"><label for="${fid(f)}">${f.label}</label>${f.type==="choice"?`<select id="${fid(f)}"><option value="">Choose…</option>${f.options.map(o=>`<option>${o}</option>`).join("")}</select>`:`<input id="${fid(f)}" inputmode="decimal" autocomplete="off">`}<div class="mark" aria-live="polite"></div></div>`).join("")}</div>
+   <div class="row"><button class="btn primary" data-a="check">Check answers</button><button class="btn" data-a="work">Show working</button>${(L.tools||[]).includes("ttable")?`<button class="btn" data-a="tt">Show t table</button>`:""}<button class="btn" data-a="new">New data</button></div><div data-a="out"></div>`;
+  const out=$('[data-a="out"]',box);
+  $('[data-a="check"]',box).onclick=()=>{
+    let empty=0;
+    L.fields.forEach(f=>{
+      const el=$("#"+fid(f)),wrap=el.closest(".field"),mk=$(".mark",wrap),truth=f.t(d);
+      wrap.classList.remove("ok","bad");
+      let ok;
+      if(f.type==="choice"){if(!el.value){mk.textContent="";empty++;return;}ok=el.value===truth;}
+      else{const u=readNum(el);if(u===null){mk.textContent="";empty++;return;}
+        if(isNaN(u)){wrap.classList.add("bad");mk.textContent="Enter a number, such as 12.5";return;}
+        ok=close(u,truth,f.tol);
+        if(!ok){wrap.classList.add("bad");mk.textContent="✗ "+(f.hint?f.hint(d,u):"Check your working.");}}
+      if(f.type==="choice"&&!ok){wrap.classList.add("bad");mk.textContent="✗ "+(f.hint?f.hint(d):"Not quite.");}
+      if(ok){wrap.classList.add("ok");mk.textContent="✓ Correct";if(!got.has(f.k)){got.add(f.k);award(true,10);}}
+      else award(false,0);
+    });
+    if(got.size===L.fields.length){
+      markDone(L.id);if(!bonus){bonus=true;award(true,20);}
+      out.innerHTML=`<div class="why"><strong>All correct, plus a 20-point bonus.</strong> Here is how you would report it:<div class="callout">${L.report?L.report(d):""}</div><a class="btn" href="#" data-a="again">Try another data set</a></div>`;
+      $('[data-a="again"]',out).onclick=e=>{e.preventDefault();cnt.p[L.id]=(cnt.p[L.id]||0)+1;renderPractice(L);};
+    }else if(empty)out.innerHTML=`<p class="meta">${empty} box${empty>1?"es are":" is"} still empty. Fill ${empty>1?"them":"it"} in and check again.</p>`;
+    else out.innerHTML="";
+  };
+  $('[data-a="work"]',box).onclick=()=>{const ol=document.createElement("ol");ol.className="steps";allSteps(L,d).forEach(s=>ol.appendChild(stepLI(s)));out.innerHTML=`<div class="working"><p><strong>Full working for this data set</strong></p></div>`;$(".working",out).appendChild(ol);};
+  const tt=$('[data-a="tt"]',box);if(tt)tt.onclick=()=>{out.innerHTML=tTableHTML();};
+  $('[data-a="new"]',box).onclick=()=>{cnt.p[L.id]=(cnt.p[L.id]||0)+1;renderPractice(L);};
+}
+
+function dataView(){
+  const ds=DS[bankKey],rows=getData(bankKey);
+  const numeric=ds.codebook.filter(c=>c.level==="interval"||c.level==="ratio"),cat=ds.codebook.filter(c=>c.level==="nominal"||c.level==="ordinal");
+  app.innerHTML=`<h2>Data bank</h2>
+  <p class="lede">These data sets are synthetic: made up by the app to look like real Caribbean education research. They are not real results for any school, parish or country. Every lesson takes its samples from here, so you meet the same studies throughout your journey.</p>
+  <div class="sheet"><p><strong>Sample #${store.sampleNo}</strong>. Everyone using the same sample number sees exactly the same data, so a whole class can work on identical numbers. Draw a new sample to get fresh data across every lesson.</p>
+   <div class="row"><button class="btn primary" id="newSample">Draw a new sample</button><label class="meta" for="sampleIn">or go to sample number</label><input id="sampleIn" inputmode="numeric" style="width:6rem;padding:.4rem;border:1.5px solid var(--line);border-radius:4px;background:var(--surface)" value="${store.sampleNo}"><button class="btn" id="goSample">Go</button></div></div>
+  <div class="row"><div class="seg" role="group" aria-label="Data set">${DATASETS.map(d=>`<button data-k="${d.key}" aria-pressed="${d.key===bankKey}">${d.title}</button>`).join("")}</div></div>
+  <h3>${ds.title}</h3><p>${ds.story}</p><p class="meta">${rows.length} ${ds.cases}.</p>
+  <h3>Codebook</h3><p class="meta">A codebook lists every variable, what it means and how it was measured. Researchers write one before collecting data.</p>
+  <div class="table-wrap"><table><thead><tr><th class="l">Variable</th><th class="l">Label</th><th class="l">Level</th><th class="l">Type</th><th class="l">Description</th></tr></thead><tbody>${ds.codebook.map(c=>`<tr><td class="l"><code>${c.name}</code></td><td class="l">${c.label}</td><td class="l">${c.level==="id"?"Identifier":`<span class="chip level-${c.level}">${c.level[0].toUpperCase()+c.level.slice(1)}</span>`}</td><td class="l">${c.kind}</td><td class="l">${c.desc}</td></tr>`).join("")}</tbody></table></div>
+  ${numeric.length?`<h3>Numerical variables at a glance</h3>${table(["Variable","n","Mean","SD","Min","Median","Max"],numeric.map(c=>{const v=rows.map(r=>r[c.name]);return[c.label,v.length,fmt(mean(v)),fmt(sd(v)),Math.min(...v),fmt(median(v)),Math.max(...v)];}))}`:""}
+  ${cat.length?`<h3>Categorical variables at a glance</h3><div class="groups">${cat.map(c=>{const f=freq(rows.map(r=>r[c.name]));const keys=[...f.keys()].sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true}));return `<div><p class="meta"><strong>${c.label}</strong></p>${table(["Value","f","%"],keys.map(k=>[k,f.get(k),fmt(f.get(k)/rows.length*100,1)]))}</div>`;}).join("")}</div>`:""}
+  <h3>The data</h3>
+  <div class="row"><button class="btn primary" id="dl">Download CSV</button><button class="btn" id="cp">Copy as CSV</button><span class="meta" id="cpMsg" aria-live="polite"></span></div>
+  <div class="data-scroll"><table><thead><tr>${ds.codebook.map(c=>`<th>${c.name}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${ds.codebook.map(c=>`<td>${r[c.name]}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+  <p class="meta">Open the CSV in Excel, Google Sheets, SPSS, jamovi or R to check your hand calculations against software.</p>`;
+  $$(".seg button",app).forEach(b=>b.onclick=()=>{bankKey=b.dataset.k;dataView();});
+  $("#newSample").onclick=()=>{store.sampleNo++;save();dataView();};
+  $("#goSample").onclick=()=>{const v=parseInt($("#sampleIn").value,10);if(v>0&&v<1e6){store.sampleNo=v;save();dataView();}};
+  $("#dl").onclick=()=>{const blob=new Blob([toCSV(bankKey)],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`${bankKey}-sample-${store.sampleNo}.csv`;document.body.appendChild(a);a.click();a.remove();};
+  $("#cp").onclick=async()=>{const txt=toCSV(bankKey);try{await navigator.clipboard.writeText(txt);$("#cpMsg").textContent="Copied. Paste into a spreadsheet.";}catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");$("#cpMsg").textContent="Copied. Paste into a spreadsheet.";}catch(_){$("#cpMsg").textContent="Copying isn’t available here. Use Download CSV instead.";}ta.remove();}};
+}
+
+const TREE={
+ start:{q:"What is your research question mainly about?",opts:[["Describing one variable","describe"],["A relationship between two variables","relate"],["A difference between groups or conditions","differ"]]},
+ describe:{q:"What level of measurement is the variable?",opts:[["Nominal","R:descNom"],["Ordinal","R:descOrd"],["Interval or ratio","R:descNum"]]},
+ relate:{q:"What kind of variables are they?",opts:[["Both numerical (interval or ratio)","relnum"],["Both categorical","R:chi"],["At least one is ordinal","R:spearman"]]},
+ relnum:{q:"What do you want to find out?",opts:[["How strongly they are related","R:pearson"],["How well one predicts the other","R:regression"]]},
+ differ:{q:"What kind of outcome (dependent variable) are you measuring?",opts:[["Numerical (interval or ratio)","diffnum"],["Categories (counts)","R:chi"],["Ordinal ratings or ranks","R:nonpar"]]},
+ diffnum:{q:"How many groups or measurements are you comparing?",opts:[["One group against a known value","R:onet"],["Two","two"],["Three or more","R:anova"]]},
+ two:{q:"Do both sets of scores come from the same people?",opts:[["Yes: the same people measured twice, or matched pairs","R:pairedt"],["No: two separate groups","R:indt"]]}
+};
+const RESULTS={
+ descNom:{t:"Frequencies, percentages and the mode",x:"Summarise with a frequency table and a bar chart.",l:"frequency-tables"},
+ descOrd:{t:"Median, IQR and a frequency table",x:"Report the median and interquartile range, with percentages for each category.",l:"variability"},
+ descNum:{t:"Mean and standard deviation (or median and IQR)",x:"Check the shape first. If roughly symmetric, report M and SD. If skewed or with outliers, report Mdn and IQR.",l:"central-tendency"},
+ chi:{t:"Chi-square test of independence",x:"Compares observed and expected counts in a contingency table. Report Cramér’s V as the effect size.",l:"chi-square"},
+ spearman:{t:"Spearman’s rank correlation (rho)",x:"The non-parametric partner of Pearson’s r, for ranked or ordinal data. The idea is the same as Pearson’s r, which you can learn here.",l:"correlation"},
+ pearson:{t:"Pearson correlation (r)",x:"Measures the direction and strength of a straight-line relationship. Draw a scatterplot first.",l:"correlation"},
+ regression:{t:"Simple linear regression",x:"Gives an equation to predict the outcome from the predictor, with R² showing how much it explains.",l:"regression"},
+ nonpar:{t:"A non-parametric test",x:"Two separate groups: Mann–Whitney U. Same people twice: Wilcoxon signed-rank. Three or more groups: Kruskal–Wallis. These compare ranks rather than means.",l:"choosing-a-test"},
+ onet:{t:"One-sample t-test",x:"Compares one group’s mean with a known or target value.",l:"one-sample-t"},
+ anova:{t:"One-way ANOVA",x:"Compares three or more independent groups. If F is significant, follow up with post hoc tests. If the same people are measured three or more times, you need repeated-measures ANOVA instead.",l:"anova"},
+ pairedt:{t:"Paired samples t-test",x:"Compares two related measurements, such as before and after.",l:"paired-t"},
+ indt:{t:"Independent samples t-test",x:"Compares the means of two separate groups. Report Cohen’s d as the effect size.",l:"independent-t"}
+};
+function chooseView(){
+  const path=[];
+  app.innerHTML=`<h2>Choose a test</h2><p class="lede">Answer a few questions about your study and the chooser will suggest a suitable analysis, with a link to the lesson that teaches it.</p><div class="sheet" id="tree"></div>`;
+  const box=$("#tree");
+  const draw=()=>{
+    let node="start";const answered=[];
+    for(const p of path){const o=TREE[node].opts[p];answered.push([TREE[node].q,o[0]]);node=o[1];}
+    let html=answered.map(([q,a],i)=>`<p class="meta">${q} <strong>${a}</strong> <button class="btn" style="padding:.1rem .5rem;font-size:.85rem" data-back="${i}">Change</button></p>`).join("");
+    if(node.startsWith("R:")){const r=RESULTS[node.slice(2)],L=LESSONS.find(l=>l.id===r.l);
+      html+=`<div class="result"><p class="meta">Suggested analysis</p><h3 style="margin:.2rem 0 .4rem">${r.t}</h3><p>${r.x}</p><p class="meta">Whatever the test, report descriptive statistics and an effect size alongside it.</p><div class="row"><a class="btn primary" href="#${r.l}">Go to the lesson: ${L.title}</a><button class="btn" data-restart>Start again</button></div></div>`;}
+    else html+=`<div class="tree-step"><p class="act-q">${TREE[node].q}</p><div class="opts">${TREE[node].opts.map((o,i)=>`<button class="opt" data-i="${i}">${o[0]}</button>`).join("")}</div></div>`;
+    box.innerHTML=html;
+    $$(".opt",box).forEach(b=>b.onclick=()=>{path.push(+b.dataset.i);draw();});
+    $$("[data-back]",box).forEach(b=>b.onclick=()=>{path.length=+b.dataset.back;draw();});
+    const rs=$("[data-restart]",box);if(rs)rs.onclick=()=>{path.length=0;draw();};
+  };
+  draw();
+}
+
+function glossaryView(){
+  const map=new Map();
+  LESSONS.forEach(l=>l.terms.forEach(([t,d])=>{if(!map.has(t))map.set(t,{d,l:[]});map.get(t).l.push(l);}));
+  const items=[...map.entries()].sort((a,b)=>a[0].localeCompare(b[0]));
+  app.innerHTML=`<h2>Glossary</h2><p class="lede">Every key term from the journey in one place. Search, then follow the link to see the term in action.</p>
+   <label class="meta" for="gq">Search terms</label><input id="gq" class="search" type="search" placeholder="e.g. standard deviation, p-value, ordinal">
+   <p class="meta" id="gcount"></p><dl class="gloss" id="gl"></dl>`;
+  const draw=q=>{const f=items.filter(([t,v])=>(t+" "+v.d).toLowerCase().includes(q.toLowerCase()));
+    $("#gcount").textContent=`${f.length} term${f.length===1?"":"s"}`;
+    $("#gl").innerHTML=f.length?f.map(([t,v])=>`<dt>${t}</dt><dd>${v.d}<br><a href="#${v.l[0].id}">See it in: ${v.l[0].title}</a></dd>`).join(""):`<dd>No terms match “${esc(q)}”. Try a shorter word.</dd>`;};
+  $("#gq").addEventListener("input",e=>draw(e.target.value));draw("");
+}
+
+function aboutView(){
+  app.innerHTML=`<h2>About Numbers Lab</h2>
+  <p class="lede">Numbers Lab helps Caribbean students, especially those starting postgraduate research, learn the language and logic of quantitative research using data that looks like their own world.</p>
+  <div class="sheet"><p class="meta">Created by</p><h3 style="margin:.1rem 0 .3rem">Dr Rohan Jowallah</h3><p>Educator</p>
+   <p>Numbers Lab brings a critical literacy lens to numbers. Reading data, like reading any text, means asking who produced it, who is missing, and whose story it tells. Students learn to calculate correctly and to question what the calculations show.</p></div>
+  <h3>What’s inside</h3>
+  <p>${LESSONS.length} lessons across ${STAGES.length} stages, ${DATASETS.length} synthetic Caribbean research data sets with codebooks, a test chooser, a glossary of key terms and interactive simulations of sampling, statistical power and disaggregation.</p>
+  <h3>How to cite</h3>
+  <div class="callout">Jowallah, R. (2026). <em>Numbers Lab: A quantitative research journey for Caribbean researchers</em> (Version ${APP_VERSION}) [Web application]. ${esc(location.href.split("#")[0])}</div>
+  <h3>Licence</h3>
+  <p>© 2026 Rohan Jowallah.</p>
+  <p><strong>Lessons, text and data designs</strong> are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>. You may share and adapt them for non-commercial purposes if you credit the creator and share your adaptations under the same licence.</p>
+  <p><strong>Source code</strong> is released under the MIT Licence.</p>
+  <h3>About the data</h3>
+  <p>Every data set in Numbers Lab is synthetic. Names, schools and results are made up for teaching. They are designed to resemble patterns found in Caribbean education research but are not real figures for any school, parish or country. For real statistics, see the lesson <a href="#caribbean-data-sources">Finding real Caribbean data</a>.</p>
+  <p class="meta">Version ${APP_VERSION}, November 2026. Progress and points are stored only in your browser.</p>`;
+}
+
+/* ===== routing ===== */
+function route(){
+  const h=location.hash.slice(1)||"journey",L=LESSONS.find(l=>l.id===h);
+  const navKey=L?"journey":["data","choose","glossary","about"].includes(h)?h:"journey";
+  $$("nav.top a").forEach(a=>a.setAttribute("aria-current",a.getAttribute("href")==="#"+navKey?"page":"false"));
+  if(L){lessonView(L);document.title=`${L.title}: Numbers Lab`;}
+  else if(h==="data"){dataView();document.title="Data bank: Numbers Lab";}
+  else if(h==="choose"){chooseView();document.title="Choose a test: Numbers Lab";}
+  else if(h==="glossary"){glossaryView();document.title="Glossary: Numbers Lab";}
+  else if(h==="about"){aboutView();document.title="About: Numbers Lab";}
+  else{journeyView();document.title="Numbers Lab: a quantitative research journey";}
+  window.scrollTo(0,0);
+}
+document.addEventListener("click",e=>{const a=e.target.closest("[data-bank]");if(a)bankKey=a.dataset.bank;});
+window.addEventListener("hashchange",route);
+$("#reset").onclick=()=>{if(!confirm("Reset your points and lesson progress?"))return;store.score=0;store.streak=0;store.done={};save();renderScore();route();};
+const themeBtn=$("#themeBtn");
+function applyTheme(t){if(t)document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme;}
+try{applyTheme(localStorage.getItem("nl-theme"));}catch(e){}
+themeBtn.onclick=()=>{const cur=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const nx=cur==="dark"?"light":"dark";applyTheme(nx);try{localStorage.setItem("nl-theme",nx);}catch(e){}if(!location.hash||location.hash==="#journey")journeyView();};
+renderScore();route();updateProg();
+</script>
+</body>
+</html>
